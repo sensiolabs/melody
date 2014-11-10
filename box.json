@@ -1,0 +1,21 @@
+{
+    "output": "build/melody.phar",
+    "chmod": "0755",
+    "compactors": [
+        "Herrera\\Box\\Compactor\\Php"
+    ],
+    "directories": ["src"],
+    "files": [
+        "LICENSE"
+    ],
+    "finder": [
+        {
+            "name": ["*.php"],
+            "exclude": [ "Tests", "tests" ],
+            "in": ["src", "vendor"]
+        }
+    ],
+    "git-commit": "git-commit",
+    "main": "bin/melody",
+    "stub": true
+}

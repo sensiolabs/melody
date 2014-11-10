@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+
+if (!file_exists(__DIR__.'/../vendor/autoload.php')) {
+    echo "Melody's dependencies not installed.\n";
+    exit(1);
+}
+
+require_once __DIR__.'/../vendor/autoload.php';
+
+use SensioLabs\Melody\Console\Application;
+
+$application = new Application();
+$application->run();

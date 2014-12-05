@@ -14,6 +14,7 @@ use Symfony\Component\Process\ProcessBuilder;
 class Runner
 {
     const BOOTSTRAP_FILENAME = 'bootstrap.php';
+
     private $vendorDir;
 
     public function __construct($vendorDir = 'vendor')

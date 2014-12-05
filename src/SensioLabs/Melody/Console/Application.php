@@ -2,15 +2,11 @@
 
 namespace SensioLabs\Melody\Console;
 
-use KevinGH\Amend\Command;
-use KevinGH\Amend\Helper;
 use SensioLabs\Melody\Console\Command\RunCommand;
 use SensioLabs\Melody\Console\Command\SelfUpdateCommand;
 use SensioLabs\Melody\Melody;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Helper\ProcessHelper;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Application

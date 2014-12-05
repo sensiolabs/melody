@@ -24,7 +24,6 @@ class Melody
     private $handlers;
     private $wdFactory;
     private $scriptBuilder;
-    private $resourceParser;
     private $composer;
     private $runner;
 

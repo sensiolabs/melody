@@ -34,10 +34,8 @@ class WorkingDirectoryFactory
 
     private function generateHash(array $packages)
     {
-        $copy = $packages;
+        ksort($packages);
 
-        ksort($copy);
-
-        return hash('sha256', serialize($copy));
+        return hash('sha256', serialize($packages));
     }
 }

@@ -23,7 +23,7 @@ class SelfUpdateCommand extends Command
             ->setDescription('Update melody.phar to the latest version.')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command replace your melody by the
-latest version from cs.sensiolabs.org.
+latest version from melody.sensiolabs.org.
 
 <info>php melody %command.name%</info>
 

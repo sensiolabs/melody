@@ -5,6 +5,7 @@ namespace SensioLabs\Melody\WorkingDirectory;
 use SensioLabs\Melody\Runner\Runner;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * GarbageCollector
@@ -19,13 +20,11 @@ class GarbageCollector
 
     private $storePath;
     private $filesystem;
-    private $finder;
 
     public function __construct($storePath)
     {
         $this->storePath = $storePath;
         $this->filesystem = new Filesystem();
-        $this->finder = new Finder();
     }
 
     /**
@@ -39,7 +38,7 @@ class GarbageCollector
             ->in($this->storePath)
             ->depth(1)
             ->name(Runner::BOOTSTRAP_FILENAME)
-            ->filter(function ($d) use ($maxATime) {
+            ->filter(function (SplFileInfo $d) use ($maxATime) {
                 return $d->getATime() < $maxATime;
             })
         ;

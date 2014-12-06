@@ -8,13 +8,13 @@ You can easily [create a gist](https://gist.github.com) to share a snippet and
 execute it using `melody`. Instead of downloading the file to your computer,
 simply pass the URL to `melody`:
 
-    $ melody run https://gist.github.com/csarrazi/7494d27255d0561157b8
+    $ melody run https://gist.github.com/lyrixx/565752f13499a3fa17d9
 
 Supported formats:
 
-* Gist Id: `7494d27255d0561157b8`
-* Username/Id: `csarrazi/7494d27255d0561157b8`
-* Gist URI: `https://gist.github.com/csarrazi/7494d27255d0561157b8`
+* Gist Id: `565752f13499a3fa17d9`
+* Username/Id: `lyrixx/565752f13499a3fa17d9`
+* Gist URI: `https://gist.github.com/lyrixx/565752f13499a3fa17d9`
 
 Please note that `melody` can only handle gists which contain a single PHP file.
 

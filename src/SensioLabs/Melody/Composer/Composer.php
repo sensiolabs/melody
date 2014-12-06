@@ -64,7 +64,14 @@ class Composer
             ->mustRun()
         ;
 
-        return trim($process->getOutput());
+        $output = trim($process->getOutput());
+
+        // Composer could add a message telling the version is outdated like:
+        // "This development build of composer is over 30 days old"
+        // We should take the last line.
+        $outputByLines = explode(PHP_EOL, $output);
+
+        return end($outputByLines);
     }
 
     private function guessComposerPath()

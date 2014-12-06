@@ -80,7 +80,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
             });
         };
 
-        $melody->run($filename, $configuration, $cliExecutor);
+        $melody->run($filename, array(), $configuration, $cliExecutor);
 
         return $output;
     }

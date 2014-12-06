@@ -29,6 +29,10 @@ class GistHandler implements ResourceHandlerInterface
         $gist = new Gist($uri);
         $data = $gist->get();
 
+        if (array_key_exists('message', $data)) {
+            throw new \InvalidArgumentException('There is an issue with your gist URL: '.$data['message']);
+        }
+
         $files = $data['files'];
 
         // Throw an error if the gist contains multiple files

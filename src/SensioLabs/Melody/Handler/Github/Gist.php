@@ -63,7 +63,7 @@ class Gist
         curl_close($handle);
 
         if (!$content) {
-            throw new \InvalidArgumentException(sprintf('Gist "%s" not found', $gist));
+            throw new \InvalidArgumentException(sprintf('Gist "%s" not found', $this->id));
         }
 
         return json_decode($content, true);

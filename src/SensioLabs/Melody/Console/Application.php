@@ -16,9 +16,7 @@ use Symfony\Component\Console\Helper\ProcessHelper;
  */
 class Application extends BaseApplication
 {
-    const MANIFEST_URI = 'http://melody.sensiolabs.org/manifest.json';
-
-    private static $logo = '
+    const LOGO = '
           :::   :::   :::::::::: :::        ::::::::  :::::::::  :::   :::
         :+:+: :+:+:  :+:        :+:       :+:    :+: :+:    :+: :+:   :+:
       +:+ +:+:+ +:+ +:+        +:+       +:+    +:+ +:+    +:+  +:+ +:+
@@ -35,7 +33,7 @@ class Application extends BaseApplication
 
     public function getHelp()
     {
-        return self::$logo.parent::getHelp();
+        return self::LOGO.parent::getHelp();
     }
 
     public function getLongVersion()

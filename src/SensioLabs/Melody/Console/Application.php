@@ -53,7 +53,9 @@ class Application extends BaseApplication
         $commands = parent::getDefaultCommands();
 
         $commands[] = new RunCommand();
-        $commands[] = new SelfUpdateCommand();
+        if (\Phar::running()) {
+            $commands[] = new SelfUpdateCommand();
+        }
 
         return $commands;
     }

@@ -39,33 +39,54 @@ EOT
     {
         $remoteFilename = 'http://get.sensiolabs.org/melody.phar';
         $localFilename = $_SERVER['argv'][0];
-        $tempFilename = basename($localFilename, '.phar').'-tmp.phar';
-        if (false === @file_get_contents($remoteFilename)) {
-            $output->writeln('<error>Unable to download new versions from the server.</error>');
 
+        if (is_writable(dirname($localFilename))) {
+            $moveCallback = function ($tempFilename, $localFilename) {
+                rename($tempFilename, $localFilename);
+            };
+        } elseif (is_writable($localFilename)) {
+            $moveCallback = function ($tempFilename, $localFilename) {
+                file_put_contents($localFilename, file_get_contents($tempFilename));
+                unlink($tempFilename);
+            };
+        } else {
+            $output->writeln(sprintf('<error>The file %s could not be written.</error>', $localFilename));
+            $output->writeln('<error>Please run the self-update command with higher privileges.</error>');
             return 1;
         }
 
-        try {
-            copy($remoteFilename, $tempFilename);
-            chmod($tempFilename, 0777 & ~umask());
+        $tempDirectory = sys_get_temp_dir();
+        if (!is_writable($tempDirectory)) {
+            $output->writeln(sprintf('<error>The temporary directory %s could not be written.</error>', $tempDirectory));
+            $output->writeln('<error>Please run the self-update command with higher privileges.</error>');
+            return 1;
+        }
 
+        $tempFilename = sprintf('%s/melody-%s.phar', $tempDirectory, uniqid());
+
+        @copy($remoteFilename, $tempFilename);
+        if (!file_exists($tempFilename)) {
+            $output->writeln('<error>Unable to download new versions from the server.</error>');
+            return 1;
+        }
+
+        chmod($tempFilename, 0777 & ~umask());
+        try {
             // test the phar validity
             $phar = new \Phar($tempFilename);
+
             // free the variable to unlock the file
             unset($phar);
-            rename($tempFilename, $localFilename);
-
-            $output->writeln('<info>melody updated.</info>');
         } catch (\Exception $e) {
-            if (!$e instanceof \UnexpectedValueException && !$e instanceof \PharException) {
-                throw $e;
-            }
             unlink($tempFilename);
             $output->writeln(sprintf('<error>The download is corrupt (%s).</error>', $e->getMessage()));
             $output->writeln('<error>Please re-run the self-update command to try again.</error>');
 
             return 1;
         }
+
+        call_user_func($moveCallback, $tempFilename, $localFilename);
+
+        $output->writeln('<info>melody updated.</info>');
     }
 }

@@ -51,3 +51,18 @@ Only use this method if you know what you're doing, because `--prefer-source` is
 not efficient at all.
 
     $ php melody.phar run --prefer-source test.php
+
+Arguments
+---------
+
+Melody allow you to pass arguments to your script.
+
+The simplest way, is to add your arguments after the name of the script.
+
+    $ php melody.phar run test.php arg1 arg2
+
+But this method does not works with options starting by `-` or `--`, because
+melody will catch them. To use options, you must prepend your options by ` -- `.
+
+    $ php melody.phar run test.php -- -a -arg1 arg2
+

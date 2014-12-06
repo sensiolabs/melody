@@ -25,7 +25,8 @@ class RunCommand extends Command
         $this
             ->setName('run')
             ->setDescription('execute a script')
-            ->addArgument('script', InputArgument::IS_ARRAY, 'Which script do you want to run?')
+            ->addArgument('script', InputArgument::REQUIRED, 'Which script do you want to run?')
+            ->addArgument('arguments', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'Which arguments do you want to pass to the script?')
             ->addOption('no-cache', null, InputOption::VALUE_NONE, 'If set, do not rely on previous cache.')
             ->addOption('prefer-source', null, InputOption::VALUE_NONE, 'Forces installation from package sources when possible, including VCS information.')
             ->setHelp(
@@ -41,6 +42,10 @@ You may also run a gist file:
 If you want to debug things a little bit, it might be useful to use:
 
 <info>php melody.phar run -vvv --no-cache test.php</info>
+
+If you want to pass arguments to your script, use:
+
+<info>php melody.phar run test.php -- -a --arg1 arg2</info>
 
 EOT
             )
@@ -69,8 +74,9 @@ EOT
 
         $configuration = new RunConfiguration($input->getOption('no-cache'), $input->getOption('prefer-source'));
 
-        $parts = $input->getArgument('script');
+        $script = $input->getArgument('script');
+        $arguments = $input->getArgument('arguments');
 
-        $melody->run($parts[0], array_slice($parts, 1), $configuration, $cliExecutor);
+        $melody->run($script, $arguments, $configuration, $cliExecutor);
     }
 }

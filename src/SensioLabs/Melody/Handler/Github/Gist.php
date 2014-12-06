@@ -54,7 +54,7 @@ class Gist
             CURLOPT_URL            => sprintf('https://api.github.com/gists/%s', $this->id),
             CURLOPT_HTTPHEADER     => array(
                 "Accept: application/vnd.github.v3+json",
-                "User-Agent: Composer-Script"
+                "User-Agent: Melody-Script"
             ),
             CURLOPT_RETURNTRANSFER => 1,
         ));

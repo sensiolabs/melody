@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by stof at 2014-12-05T23:01:53Z
+
+it would be good to fix the runner to support HHVM properly
+
+---------------------------------------------------------------------------
+
+by stof at 2014-12-05T23:02:11Z
+
+and no, allowing failure on HHVM is not the right way
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-05T23:09:41Z
+
+@stof huhu. I don't have HHVM installed on my laptop :( So it's not going to be easy to fix it. More over, it looks like it's a travis issue. Then, IMHO, HHVM support could be added into another PR.
+
+---------------------------------------------------------------------------
+
+by saro0h at 2014-12-05T23:38:02Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by stof at 2014-12-05T23:58:55Z
+
+-1 for the allowed failure. instead, you should fix https://github.com/sensiolabs/melody/blob/9ae5caac6da4049b01ca7a930ac556f1aba72786/src/SensioLabs/Melody/Runner/Runner.php#L39 to use the HHVM-compatible way to build the php executable. See the fix done in SensioDistributionBundle a while ago
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-06T12:27:45Z
+
+@stof I'm going to merge this one because the HHVM support could and will be added by another PR. Then this PR really have to be merged to avoid [angry user](https://twitter.com/couac/status/541199680390963201) and to avoid [duplicate effort](https://github.com/sensiolabs/melody/pull/6)

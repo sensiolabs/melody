@@ -12,7 +12,3 @@ install:
 
 script:
   - phpunit
-
-matrix:
-    allow_failures:
-        - php: hhvm

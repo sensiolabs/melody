@@ -44,6 +44,7 @@ class Composer
 
         $process = ProcessBuilder::create($args)
             ->setWorkingDirectory($dir)
+            ->setTimeout(240)
             ->getProcess()
         ;
 

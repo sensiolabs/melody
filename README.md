@@ -26,6 +26,8 @@ And simply run it:
 melody run test.php
 ```
 
+![demo](http://melody.sensiolabs.org/img/melody.gif)
+
 More Information
 ----------------
 

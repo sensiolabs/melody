@@ -23,7 +23,7 @@ foreach ($finder as $file) {
 And simply run it:
 
 ```bash
-melody run test.php
+$ melody run test.php
 ```
 
 ![demo](http://melody.sensiolabs.org/img/melody.gif)

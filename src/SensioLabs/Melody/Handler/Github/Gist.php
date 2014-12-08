@@ -15,9 +15,9 @@ class Gist
     private $content;
 
     /**
-     * Extracts a gist's information from a gist ID
+     * Extracts a gist's information from a gist URL
      *
-     * @param string $gist The gist's ID
+     * @param string $url The gist's URL
      *
      * @return array
      *

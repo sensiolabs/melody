@@ -22,7 +22,7 @@ interface ResourceHandlerInterface
     public function supports($filename);
 
     /**
-     * Creates a new resouces, based on a filename
+     * Creates a new resources, based on a filename
      *
      * @param  string   $filename
      * @return Resource

@@ -45,7 +45,10 @@ class ConfigurationParser
             $packages[] = $this->extractPackage($package);
         }
 
-        $packages = call_user_func_array('array_merge', $packages);
+        // allow empty list of config packages
+        if ($packages) {
+            $packages = call_user_func_array('array_merge', $packages);
+        }
 
         return $packages;
     }

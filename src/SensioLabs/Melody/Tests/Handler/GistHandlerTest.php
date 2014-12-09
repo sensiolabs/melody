@@ -56,7 +56,6 @@ class GistHandlerTest extends \PHPUnit_Framework_TestCase
         $resource = $this->handler->createResource(self::SINGLE_URL);
 
         $this->assertInstanceOf('SensioLabs\Melody\Resource\Resource', $resource);
-        $this->assertSame(self::SINGLE_URL, $resource->getFilename());
         $this->assertContains('$composer', $resource->getContent());
         $this->assertContains('twig/twig', $resource->getContent());
     }

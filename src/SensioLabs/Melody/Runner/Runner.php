@@ -2,6 +2,8 @@
 
 namespace SensioLabs\Melody\Runner;
 
+use SensioLabs\Melody\Resource\LocalResource;
+use SensioLabs\Melody\Resource\Resource;
 use SensioLabs\Melody\Script\Script;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
@@ -24,10 +26,10 @@ class Runner
 
     public function getProcess(Script $script, $dir)
     {
-        if ($script->getResource()->isLocal()) {
-            $bootstrap = $this->getLocalBootstrap($script);
+        if ($script->getResource() instanceof LocalResource) {
+            $bootstrap = $this->getLocalBootstrap($script->getResource());
         } else {
-            $bootstrap = $this->getRemoteBootstrap($script);
+            $bootstrap = $this->getRemoteBootstrap($script->getResource());
         }
 
         $file = sprintf('%s/%s', $dir, self::BOOTSTRAP_FILENAME);
@@ -50,7 +52,7 @@ class Runner
         return $process;
     }
 
-    private function getLocalBootstrap(Script $script)
+    private function getLocalBootstrap(LocalResource $resource)
     {
         $template = <<<'TEMPLATE'
 {{ head }}
@@ -61,11 +63,11 @@ TEMPLATE;
 
         return strtr($template, array(
             '{{ head }}' => $this->getHead(),
-            '{{ script_filename }}' => $script->getResource()->getFilename(),
+            '{{ script_filename }}' => $resource->getFilename(),
         ));
     }
 
-    private function getRemoteBootstrap(Script $script)
+    private function getRemoteBootstrap(Resource $resource)
     {
         $template = <<<TEMPLATE
 {{ head }}
@@ -77,7 +79,7 @@ TEMPLATE;
 
         return strtr($template, array(
             '{{ head }}' => $this->getHead(),
-            '{{ code }}' => $script->getResource()->getContent()
+            '{{ code }}' => $resource->getContent()
         ));
     }
 

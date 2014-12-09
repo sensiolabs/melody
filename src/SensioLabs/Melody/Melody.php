@@ -6,6 +6,7 @@ use SensioLabs\Melody\Composer\Composer;
 use SensioLabs\Melody\Configuration\RunConfiguration;
 use SensioLabs\Melody\Handler\FileHandler;
 use SensioLabs\Melody\Handler\GistHandler;
+use SensioLabs\Melody\Handler\StreamHandler;
 use SensioLabs\Melody\Runner\Runner;
 use SensioLabs\Melody\Script\ScriptBuilder;
 use SensioLabs\Melody\WorkingDirectory\GarbageCollector;
@@ -34,6 +35,7 @@ class Melody
         $this->handlers = array(
             new FileHandler(),
             new GistHandler(),
+            new StreamHandler(),
         );
         $this->scriptBuilder = new ScriptBuilder();
         $this->wdFactory = new WorkingDirectoryFactory($storagePath);
@@ -80,6 +82,6 @@ class Melody
             return $handler->createResource($filename);
         }
 
-        throw new \LogicException(sprintf('No handler found for filename "%s".', $filename));
+        throw new \LogicException(sprintf('No handler found for resource "%s".', $filename));
     }
 }

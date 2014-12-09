@@ -39,6 +39,11 @@ You may also run a gist file:
 
 <info>php melody.phar run https://gist.github.com/lyrixx/23bb3980daf65154c3d4</info>
 
+Or a stream resource
+
+<info>php melody.phar run http://my.private/snippets/test.php</info>
+<info>curl http://my.private/snippets/demo.php | php melody.phar run php://stdin -- --arg1</info>
+
 If you want to debug things a little bit, it might be useful to use:
 
 <info>php melody.phar run -vvv --no-cache test.php</info>

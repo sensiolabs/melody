@@ -12,16 +12,6 @@ Globally (manual)
 
 You can run these commands to easily access melody from anywhere on your system:
 
-
-    $ sudo wget http://get.sensiolabs.org/melody.phar -O /usr/local/bin/melody
-
-or with curl:
-
-
-    $ sudo curl http://get.sensiolabs.org/melody.phar -o /usr/local/bin/melody
-
-then:
-
-    $ sudo chmod a+x /usr/local/bin/melody
+    $ sudo sh -c "curl http://get.sensiolabs.org/melody.phar -o /usr/local/bin/melody && chmod a+x /usr/local/bin/melody"
 
 Then, just run `melody`

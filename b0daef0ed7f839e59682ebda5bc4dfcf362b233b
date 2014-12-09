@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------
+
+by staabm at 2014-12-09T07:03:20Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-09T09:56:35Z
+
+Hello.
+
+What's the benefit ? there is more "code", and now, it's harder to reader / edit.
+
+(I'm speaking of triple back-quote versus indent)
+
+---------------------------------------------------------------------------
+
+by jeremy-derusse at 2014-12-09T10:06:52Z
+
+Actualy the website render code block based on those files and is not able to detect the language.
+See the colorization of http://melody.sensiolabs.org/#btn_run-gists-scripts. It detect regexp in the url, and sometime the `$` is yellow, sometime, it's white.
+
+An other solution could be to create a script on the webSite builder who adds triple back-quote just before renderer
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-09T10:09:25Z
+
+OK. :+1: so. But this PR needs rebase.
+
+---------------------------------------------------------------------------
+
+by jeremy-derusse at 2014-12-09T10:20:17Z
+
+done

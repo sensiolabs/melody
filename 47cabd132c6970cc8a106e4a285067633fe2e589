@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by staabm at 2014-12-09T07:00:46Z
+
+Cant we use the same command as composer does (using php)?
+
+---------------------------------------------------------------------------
+
+by jeremy-derusse at 2014-12-09T07:18:36Z
+
+Actualy, composer use a big script (https://github.com/composer/getcomposer.org/blob/master/web/installer).
+It works fine and check a lot of things. But it's really huge.
+For now, we choose to be more simple (with less features). The command is a little bit more complicated but wget do the job.
+BTW, the right command to install globaly composer as a non root user is `curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer` I'm not sure that is simpler.
+
+---------------------------------------------------------------------------
+
+by jeremy-derusse at 2014-12-09T07:19:36Z
+
+Given composer use curl, I wonder if I should keep curl and remove wget...
+
+---------------------------------------------------------------------------
+
+by staabm at 2014-12-09T08:00:59Z
+
+IMO curl is a better alternative, since it is also available for windows. not sure if wget is supported their, too.

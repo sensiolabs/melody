@@ -69,9 +69,7 @@ TEMPLATE;
     {
         $template = <<<TEMPLATE
 {{ head }}
-?>
-
-{{ code }}
+?>{{ code }}
 
 TEMPLATE;
 

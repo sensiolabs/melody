@@ -59,6 +59,12 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('value', $output);
     }
 
+    public function testRunWithPhpOptions()
+    {
+        $output = $this->melodyRun('php-options.php');
+        $this->assertContains('42M', $output);
+    }
+
     private function melodyRun($fixture, array $options = array())
     {
         $melody = new Melody();

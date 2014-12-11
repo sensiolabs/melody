@@ -19,69 +19,29 @@ class ConfigurationParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException SensioLabs\Melody\Exception\ParseException
-     * @expectedExceptionMessage The configuration should be an array.
+     * @dataProvider providePackagesError
      */
-    public function testParseNotAnArray()
+    public function testParsePackagesError($packages, $exception)
     {
-        $this->parser->parseConfiguration('foobar');
+        $this->setExpectedException('SensioLabs\Melody\Exception\ParseException', $exception);
+
+        $this->parser->parseConfiguration($packages);
     }
 
-    /**
-     * @expectedException SensioLabs\Melody\Exception\ParseException
-     * @expectedExceptionMessage The configuration should define a "packages" key.
-     */
-    public function testParseNotContainsPackagesKey()
+    public function providePackagesError()
     {
-        $this->parser->parseConfiguration(array('foobar' => 'bar'));
+        return array(
+            array('foobar', 'The configuration should be an array.'),
+            array(array('foobar' => 'bar'), 'The configuration should define a "packages" key.'),
+            array(array('packages' => 'string'), 'The packages configuration should be an array.'),
+            array(array('packages' => array('symfony/symfony' => array())), 'The package at key "symfony/symfony" should be a string.'),
+            array(array('packages' => array('symfony/symfony: 1 :1')), 'The package named "symfony/symfony" is not valid. It should contain only one ":".'),
+            array(array('packages' => array('symfony/symfony/nope: 1')), 'The package named "symfony/symfony/nope" is not valid.'),
+            array(array('packages' => array('symfony/symfony:')), 'The package version named "symfony/symfony" is not valid.'),
+        );
     }
 
-    /**
-     * @expectedException SensioLabs\Melody\Exception\ParseException
-     * @expectedExceptionMessage Packages configuration should be an array.
-     */
-    public function testParsePackagesKeyNotAnArray()
-    {
-        $this->parser->parseConfiguration(array('packages' => 'string'));
-    }
-
-    /**
-     * @expectedException SensioLabs\Melody\Exception\ParseException
-     * @expectedExceptionMessage The package at key "symfony/symfony" should be a string.
-     */
-    public function testParsePackageIsAnArray()
-    {
-        $this->parser->parseConfiguration(array('packages' => array('symfony/symfony' => array())));
-    }
-
-    /**
-     * @expectedException SensioLabs\Melody\Exception\ParseException
-     * @expectedExceptionMessage The package named "symfony/symfony" is not valid. It should contain only one ":".
-     */
-    public function testParseDoubleColon()
-    {
-        $this->parser->parseConfiguration(array('packages' => array('symfony/symfony: 1 :1')));
-    }
-
-    /**
-     * @expectedException SensioLabs\Melody\Exception\ParseException
-     * @expectedExceptionMessage The package named "symfony/symfony/nope" is not valid.
-     */
-    public function testParsePackageName()
-    {
-        $this->parser->parseConfiguration(array('packages' => array('symfony/symfony/nope: 1')));
-    }
-
-    /**
-     * @expectedException SensioLabs\Melody\Exception\ParseException
-     * @expectedExceptionMessage The package version named "symfony/symfony" is not valid.
-     */
-    public function testParseInvalidVersion()
-    {
-        $this->parser->parseConfiguration(array('packages' => array('symfony/symfony:')));
-    }
-
-    public function testParse()
+    public function testParsePackages()
     {
         $config = $this->parser->parseConfiguration(array('packages' => array(
             'symfony/finder',
@@ -97,5 +57,39 @@ class ConfigurationParserTest extends \PHPUnit_Framework_TestCase
             'symfony/filesystem' => '1.3',
         );
         $this->assertSame($expected, $config->getPackages());
+    }
+
+    /**
+     * @dataProvider providePhpOptionsError
+     */
+    public function testParsePhpOptionsError($phpOptions, $exception)
+    {
+        $this->setExpectedException('SensioLabs\Melody\Exception\ParseException', $exception);
+
+        $this->parser->parseConfiguration($phpOptions);
+    }
+
+    public function providePhpOptionsError()
+    {
+        return array(
+            array(array('packages' => array('symfony/symfony: 1'), 'php-options' => 'string'), 'The php-options configuration should be an array.'),
+        );
+    }
+
+    public function testParsePhpOptions()
+    {
+        $config = $this->parser->parseConfiguration(array(
+            'packages' => array(
+                'symfony/finder',
+            ),
+            'php-options' => array(
+                '-S',
+                'localhost:8000',
+            ),
+        ));
+
+        $this->assertInstanceOf('SensioLabs\Melody\Configuration\ScriptConfiguration', $config);
+        $expected = array('-S', 'localhost:8000');
+        $this->assertSame($expected, $config->getPhpOptions());
     }
 }

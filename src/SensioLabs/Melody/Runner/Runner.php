@@ -40,8 +40,8 @@ class Runner
 
         $process = ProcessBuilder::create(array_merge(
             array($phpFinder->find(false)),
-            $phpFinder->findArguments(),
             $script->getConfiguration()->getPhpOptions(),
+            $phpFinder->findArguments(),
             array($file),
             $script->getArguments()
         ))->getProcess();

@@ -53,7 +53,7 @@ class Application extends BaseApplication
         $commands = parent::getDefaultCommands();
 
         $commands[] = new RunCommand();
-        if (\Phar::running()) {
+        if (0 === stripos(__FILE__, 'phar://')) {
             $commands[] = new SelfUpdateCommand();
         }
 

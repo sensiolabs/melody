@@ -85,8 +85,8 @@ The script you want to run with melody **must** starts with a YAML configuration
 embeded in a `heredoc` string named `CONFIG`. This config must contains at least one
 package to install.
 
-You can also provide a list of options to pass to php command. it could be
-usefull to start a php web server.
+Optionally you can provide a list of options to pass to php command. It could be
+usefull to e.g. start a php web server or define php.ini settings.
 
 ```php
 <?php

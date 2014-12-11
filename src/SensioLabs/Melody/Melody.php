@@ -37,13 +37,14 @@ class Melody
         );
         $this->scriptBuilder = new ScriptBuilder();
         $this->wdFactory = new WorkingDirectoryFactory($storagePath);
-        $this->composer = new Composer();
-        $this->runner = new Runner($this->composer->getVendorDir());
     }
 
     public function run($filename, array $arguments, RunConfiguration $configuration, $cliExecutor)
     {
         $this->garbageCollector->run();
+        
+        $this->composer = new Composer($configuration->composerExecutable());
+        $this->runner = new Runner($this->composer->getVendorDir());
 
         $resource = $this->createResource($filename);
 

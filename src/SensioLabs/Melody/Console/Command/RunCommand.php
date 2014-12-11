@@ -29,6 +29,7 @@ class RunCommand extends Command
             ->addArgument('arguments', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'Which arguments do you want to pass to the script?')
             ->addOption('no-cache', null, InputOption::VALUE_NONE, 'If set, do not rely on previous cache.')
             ->addOption('prefer-source', null, InputOption::VALUE_NONE, 'Forces installation from package sources when possible, including VCS information.')
+            ->addOption('composer-executable', null, InputOption::VALUE_OPTIONAL, 'Force composer executable.')
             ->setHelp(
 <<<EOT
 The <info>run</info> command executes single-file scripts using Composer
@@ -72,7 +73,7 @@ EOT
             }
         };
 
-        $configuration = new RunConfiguration($input->getOption('no-cache'), $input->getOption('prefer-source'));
+        $configuration = new RunConfiguration($input->getOption('no-cache'), $input->getOption('prefer-source'), $input->getOption('composer-executable'));
 
         $script = $input->getArgument('script');
         $arguments = $input->getArgument('arguments');

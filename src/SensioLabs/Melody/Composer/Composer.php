@@ -12,25 +12,27 @@ use Symfony\Component\Process\ProcessBuilder;
  */
 class Composer
 {
-    public function __construct($composerPath = null)
+    /**
+     * If composer executable has been guessed
+     */
+    private $guessComposer;
+
+    public function __construct($composerExecutable = null)
     {
-        if (!$composerPath) {
-            $composerPath = $this->guessComposerPath();
+        if (!$composerExecutable) {
+            $composerExecutable = $this->guessComposerExecutable();
         }
 
-        if (!$composerPath) {
+        if (!$composerExecutable) {
             throw new \RuntimeException('Impossible to find composer executable.');
         }
 
-        $this->composerPath = $composerPath;
+        $this->composerExecutable = $composerExecutable;
     }
 
     public function buildProcess(array $packages, $dir, $preferSource = false)
     {
-        $args = array(
-            $this->composerPath,
-            'require',
-        );
+        $args = $this->buildArgs(array('require'));
 
         foreach ($packages as $package => $version) {
             $args[] = sprintf('%s:%s', $package, $version);
@@ -53,12 +55,11 @@ class Composer
 
     public function getVendorDir()
     {
-        $args = array(
-            $this->composerPath,
+        $args = $this->buildArgs(array(
             'config',
             '--global',
             'vendor-dir',
-        );
+        ));
 
         $process = ProcessBuilder::create($args)
             ->getProcess()
@@ -75,8 +76,21 @@ class Composer
         return end($outputByLines);
     }
 
-    private function guessComposerPath()
+    private function buildArgs(array $args)
     {
+        array_unshift($args, $this->composerExecutable);
+
+        if (!$this->guessComposer) {
+            array_unshift($args, 'php');
+        }
+
+        return $args;
+    }
+
+    private function guessComposerExecutable()
+    {
+        $this->guessComposer = true;
+
         $finder = new ExecutableFinder();
         $finder->addSuffix('.phar');
 

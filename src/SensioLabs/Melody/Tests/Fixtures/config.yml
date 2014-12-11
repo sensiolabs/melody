@@ -1,0 +1,7 @@
+trust:
+  signatures:
+    - foo
+    - bar
+  users:
+    - baz
+    - qux

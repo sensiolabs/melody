@@ -97,6 +97,52 @@ melody will catch them. To use options, you must prepend your options by
 $ melody run test.php -- -a --arg1 arg2
 ```
 
+Trust
+-----
+
+By default, when you run an external resource (ie: a gist) Melody will display
+a warning message to let you choose if you want or not run the script.
+When you trust the resource, Melody will remember your answer and never
+again ask you for confirmation.
+
+```bash
+You are running an untrusted resource
+  URL:             https://gist.github.com/565752f13499a3fa17d9
+  Revision:        #1
+  Owner:           lyrixx
+  Created at:      Fri, 05 Dec 2014 22:22:28 +0000
+  Last update:     Tue, 09 Dec 2014 13:45:02 +0000
+
+What do you want to do (show-code, continue, abort)?
+```
+
+But if you trust the resource and don't want to interract with Melody, you
+can pass the parameter `--trust` to the command
+
+```bash
+$ melody run 565752f13499a3fa17d9 --trust
+```
+
+User Configuration
+------------------
+
+Melody stores your configuration in a file located in `~/.sensiolabs/melody.yml`.
+This file contains:
+
+* a list of trusted resources signatures (see section Trust).
+* a list of trusted users.
+
+This file is stored with a YAML syntax. You can manually edit it to complete
+the list of trusted user for instance.
+
+```yaml
+trust:
+  signatures: []
+  users:
+    - jeremy-derusse
+    - lyrixx
+```
+
 Front matter
 ------------
 

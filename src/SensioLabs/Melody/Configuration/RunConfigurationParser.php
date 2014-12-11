@@ -5,11 +5,11 @@ namespace SensioLabs\Melody\Configuration;
 use SensioLabs\Melody\Exception\ParseException;
 
 /**
- * ConfigurationParser.
+ * RunConfigurationParser.
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */
-class ConfigurationParser
+class RunConfigurationParser
 {
     const PACKAGE_DELIMITER = ':';
     const PACKAGE_REGEX = '/^((|[a-zA-Z0-9]([_.-]?[a-zA-Z0-9]+)*\\/[a-zA-Z0-9]([_.-]?[a-zA-Z0-9]+)*)|php|ext-[a-zA-Z0-9_.-]+)$/';

@@ -2,6 +2,7 @@
 
 namespace SensioLabs\Melody\Handler;
 
+use SensioLabs\Melody\Resource\Metadata;
 use SensioLabs\Melody\Resource\Resource;
 
 /**
@@ -26,6 +27,15 @@ class StreamHandler implements ResourceHandlerInterface
      */
     public function createResource($filename)
     {
-        return new Resource(file_get_contents($filename));
+        $metadata = new Metadata(
+            basename($filename),
+            null,
+            new \DateTime(),
+            new \DateTime(),
+            1,
+            $filename
+        );
+
+        return new Resource(file_get_contents($filename), $metadata);
     }
 }

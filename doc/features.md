@@ -92,6 +92,7 @@ be useful to e.g. start a php web server or define php.ini settings.
 
 ```php
 <?php
+
 <<<CONFIG
 packages:
     - silex/silex: *

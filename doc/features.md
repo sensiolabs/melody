@@ -19,7 +19,7 @@ Supported formats:
 * Gist URI: `https://gist.github.com/lyrixx/565752f13499a3fa17d9`
 
 Please note that `melody` can only handle gists which contain a single PHP 
-file.
+file. It will report an error otherwise.
 
 Caching
 -------
@@ -36,8 +36,8 @@ $ php melody.phar run --no-cache test.php
 Debug scripts
 -------------
 
-You can view Composer install your dependencies. If you want to debug things a
-little bit, it might be useful:
+In case you want to have a look whats going on behind the scenes, use the verbose
+flag make melody print output produced by Composer:
 
 ```bash
 $ php melody.phar run --vvv test.php
@@ -95,7 +95,7 @@ be useful to e.g. start a php web server or define php.ini settings.
 
 <<<CONFIG
 packages:
-    - silex/silex: *
+    - "silex/silex: *"
 php-options:
     - "-S"
     - "localhost:8000"
@@ -108,8 +108,8 @@ $app->get('/hello/{name}', function ($name) use ($app) {
 $app->run();
 ```
 
-Beware of YAML syntax:
+Beware that `CONFIG` section contents must comply with YAML syntax restrictions:
 
-* `- silex/silex: *` without quotes is an invalid YAML
-* `- silex/silex: ~1.2` without quotes is a YAML object and refused by melody
-* `- -S` without quotes is an array of arrays
+* `- "silex/silex: *"` without quotes is an invalid YAML.
+* `- "silex/silex: ~1.2"` without quotes is a YAML object and refused by melody.
+* `- "-S"` without quotes is an array of arrays.

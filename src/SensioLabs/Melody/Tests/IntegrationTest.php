@@ -62,7 +62,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     public function testRunWithPhpOptions()
     {
         $output = $this->melodyRun('php-options.php');
-        $this->assertContains('42M', $output);
+        $this->assertContains('memory_limit=42M', $output);
     }
 
     private function melodyRun($fixture, array $options = array())

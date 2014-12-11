@@ -30,7 +30,7 @@ dependencies will be cached.
 If you don't want this cache, you can disable the cache from the command line:
 
 ```bash
-$ php melody.phar run --no-cache test.php
+$ melody run --no-cache test.php
 ```
 
 Debug scripts
@@ -40,7 +40,7 @@ In case you want to have a look whats going on behind the scenes, use the verbos
 flag make melody print output produced by Composer:
 
 ```bash
-$ php melody.phar run --vvv test.php
+$ melody run --vvv test.php
 ```
 
 Download Mode
@@ -58,7 +58,7 @@ Only use this method if you know what you're doing, because `--prefer-source`
 is not efficient at all.
 
 ```bash
-$ php melody.phar run --prefer-source test.php
+$ melody run --prefer-source test.php
 ```
 
 Arguments
@@ -69,7 +69,7 @@ Melody allows you to pass arguments to your script.
 The simplest way, is to add your arguments after the name of the script.
 
 ```bash
-$ php melody.phar run test.php arg1 arg2
+$ melody run test.php arg1 arg2
 ```
 
 But this method does not works with options starting by `-` or `--`, because
@@ -77,7 +77,7 @@ melody will catch them. To use options, you must prepend your options by
 ` -- `.
 
 ```bash
-$ php melody.phar run test.php -- -a -arg1 arg2
+$ melody run test.php -- -a -arg1 arg2
 ```
 
 Front matter

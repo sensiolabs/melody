@@ -21,8 +21,9 @@ class ConfigurationParser
         }
 
         $packages = $this->parsePackages($config);
+        $phpOptions = $this->parsePhpOptions($config);
 
-        return new ScriptConfiguration($packages);
+        return new ScriptConfiguration($packages, $phpOptions);
     }
 
     private function parsePackages($config)
@@ -32,7 +33,7 @@ class ConfigurationParser
         }
 
         if (!is_array($config['packages'])) {
-            throw new ParseException('Packages configuration should be an array.');
+            throw new ParseException('The packages configuration should be an array.');
         }
 
         $packages = array();
@@ -87,4 +88,26 @@ class ConfigurationParser
         return trim($package);
     }
 
+    private function parsePhpOptions($config)
+    {
+        if (!array_key_exists('php-options', $config)) {
+            return array();
+        }
+
+        if (!is_array($config['php-options'])) {
+            throw new ParseException('The php-options configuration should be an array.');
+        }
+
+        $phpOptions = array();
+
+        foreach ($config['php-options'] as $i => $phpOption) {
+            if (!is_string($phpOption)) {
+                throw new ParseException(sprintf('The php-option at key "%s" should be a string.', $i));
+            }
+
+            $phpOptions[] = $phpOption;
+        }
+
+        return $phpOptions;
+    }
 }

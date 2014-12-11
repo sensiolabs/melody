@@ -77,3 +77,33 @@ melody will catch them. To use options, you must prepend your options by ` -- `.
 ```bash
 $ php melody.phar run test.php -- -a -arg1 arg2
 ```
+
+Front matter
+------------
+
+The script you want to run with melody **must** starts with a YAML configuration
+embeded in a `heredoc` string named `CONFIG`. This config must contains at least one
+package to install.
+
+You can also provide a list of options to pass to php command. it could be
+usefull to start a php web server.
+
+```php
+<?php
+<<<CONFIG
+packages:
+    - silex/silex
+php-options:
+    - "-S"
+    - "localhost:8000"
+CONFIG;
+$app = new Silex\Application();
+$app->get('/hello/{name}', function ($name) use ($app) {
+    return 'Hello '.$app->escape($name);
+});
+$app->run();
+```
+
+Beware of YAML syntax:
+* `- silex/silex: ~1.2` without double quote is an invalid YAML
+* `- -S` without double quote is an array of arrays

@@ -3,6 +3,7 @@
 namespace SensioLabs\Melody\Tests;
 
 use SensioLabs\Melody\Configuration\RunConfiguration;
+use SensioLabs\Melody\Configuration\UserConfiguration;
 use SensioLabs\Melody\Melody;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
@@ -25,7 +26,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     public function testRunWithDefaultOption()
     {
-        $output = $this->melodyRun('hello-world.php');
+        $output = $this->melodyRunFixture('hello-world.php');
         $this->assertContains('Loading composer repositories with package information', $output);
         $this->assertContains('Updating dependencies (including require-dev)', $output);
         $this->assertContains('Installing twig/twig (v1.16.0)', $output);
@@ -34,7 +35,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     public function testRunWithShebang()
     {
-        $output = $this->melodyRun('shebang.php');
+        $output = $this->melodyRunFixture('shebang.php');
         $this->assertContains('Loading composer repositories with package information', $output);
         $this->assertContains('Updating dependencies (including require-dev)', $output);
         $this->assertContains('Installing twig/twig (v1.16.0)', $output);
@@ -43,21 +44,21 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     public function testRunWithCache()
     {
-        $this->melodyRun('hello-world.php');
-        $output = $this->melodyRun('hello-world.php');
+        $this->melodyRunFixture('hello-world.php');
+        $output = $this->melodyRunFixture('hello-world.php');
         $this->assertSame('Hello world', $output);
     }
 
     public function testRunWithConstraints()
     {
-        $output = $this->melodyRun('hello-world-with-constraints.php');
+        $output = $this->melodyRunFixture('hello-world-with-constraints.php');
         $this->assertContains('Hello world', $output);
     }
 
     public function testRunWithNoCache()
     {
-        $this->melodyRun('hello-world.php');
-        $output = $this->melodyRun('hello-world.php', array('no_cache' => true));
+        $this->melodyRunFixture('hello-world.php');
+        $output = $this->melodyRunFixture('hello-world.php', array('no_cache' => true));
         $this->assertContains('Loading composer repositories with package information', $output);
         $this->assertContains('Updating dependencies (including require-dev)', $output);
         $this->assertContains('Installing twig/twig (v1.16.0)', $output);
@@ -66,7 +67,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     public function testRunWithPreferSource()
     {
-        $output = $this->melodyRun('pimple.php', array('prefer_source' => true));
+        $output = $this->melodyRunFixture('pimple.php', array('prefer_source' => true));
         $this->assertContains('Loading composer repositories with package information', $output);
         $this->assertContains('Updating dependencies (including require-dev)', $output);
         $this->assertContains('Installing pimple/pimple (v1.0.2)', $output);
@@ -88,8 +89,57 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
      */
     public function testRunStream($protocol, $fixture)
     {
-        $output = $this->melodyRunStream($protocol, $fixture);
+        $output = $this->melodyRunStream($protocol, $fixture, array('trust' => true));
         $this->assertContains('Hello world', $output);
+    }
+
+    public function testRunWithPhpOptions()
+    {
+        $output = $this->melodyRunFixture('php-options.php');
+        $this->assertContains('memory_limit=42M', $output);
+    }
+
+
+    /**
+     * @dataProvider provideGists
+     */
+    public function testRunGist($gist)
+    {
+        $output = $this->melodyRun($gist, array('trust' => true));
+        $this->assertContains('Hello greg', $output);
+    }
+
+    public function provideGists()
+    {
+        return array(
+            array('23bb3980daf65154c3d4'),
+            array('lyricc/23bb3980daf65154c3d4'),
+            array('https://gist.github.com/lyrixx/23bb3980daf65154c3d4'),
+        );
+    }
+
+    /**
+     * @expectedException \SensioLabs\Melody\Exception\TrustException
+     */
+    public function testRunGistUntrusted()
+    {
+        $this->melodyRun('23bb3980daf65154c3d4', array('trust' => false));
+    }
+
+    public function testRunWithForkRepositories()
+    {
+        $output = $this->melodyRunFixture('fork-repositories.php', array('prefer_source' => true));
+
+        $this->assertContains('Loading composer repositories with package information', $output);
+        $this->assertContains('Updating dependencies (including require-dev)', $output);
+        $this->assertContains('Installing pimple/pimple (v1.0.2)', $output);
+        $this->assertContains('Cloning', $output);
+        $this->assertContains('value', $output);
+    }
+
+    private function melodyRunFixture($fixture, array $options = array())
+    {
+        return $this->melodyRun(sprintf('%s/Fixtures/%s', __DIR__, $fixture), $options);
     }
 
     private function melodyRunStream($protocol, $fixture, array $options = array())
@@ -99,11 +149,13 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         $filename = sprintf('%s://%s', $protocol, $fixture);
 
         $options = array_replace(array(
+            'trust' => false,
             'prefer_source' => false,
             'no_cache' => false,
         ), $options);
 
-        $configuration = new RunConfiguration($options['no_cache'], $options['prefer_source']);
+        $runConfiguration = new RunConfiguration($options['no_cache'], $options['prefer_source'], $options['trust']);
+        $userConfiguration = new UserConfiguration();
 
         $output = null;
         $cliExecutor = function (Process $process, $useProcessHelper) use (&$output) {
@@ -113,40 +165,23 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
             });
         };
 
-        $melody->run($filename, array(), $configuration, $cliExecutor);
+        $melody->run($filename, array(), $runConfiguration, $userConfiguration, $cliExecutor);
 
         return $output;
     }
 
-    public function testRunWithPhpOptions()
-    {
-        $output = $this->melodyRun('php-options.php');
-        $this->assertContains('memory_limit=42M', $output);
-    }
-
-    public function testRunWithForkRepositories()
-    {
-        $output = $this->melodyRun('fork-repositories.php', array('prefer_source' => true));
-
-        $this->assertContains('Loading composer repositories with package information', $output);
-        $this->assertContains('Updating dependencies (including require-dev)', $output);
-        $this->assertContains('Installing pimple/pimple (v1.0.2)', $output);
-        $this->assertContains('Cloning', $output);
-        $this->assertContains('value', $output);
-    }
-
-    private function melodyRun($fixture, array $options = array())
+    private function melodyRun($filename, array $options = array())
     {
         $melody = new Melody();
 
-        $filename = $this->getFixtureFile($fixture);
-
         $options = array_replace(array(
+            'trust' => false,
             'prefer_source' => false,
             'no_cache' => false,
         ), $options);
 
-        $configuration = new RunConfiguration($options['no_cache'], $options['prefer_source']);
+        $runConfiguration = new RunConfiguration($options['no_cache'], $options['prefer_source'], $options['trust']);
+        $userConfiguration = new UserConfiguration();
 
         $output = null;
         $cliExecutor = function (Process $process, $useProcessHelper) use (&$output) {
@@ -156,7 +191,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
             });
         };
 
-        $melody->run($filename, array(), $configuration, $cliExecutor);
+        $melody->run($filename, array(), $runConfiguration, $userConfiguration, $cliExecutor);
 
         return $output;
     }
@@ -168,6 +203,6 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     private function getFixtureFile($fixtureName)
     {
-        return sprintf('%s/Integration/%s', __DIR__, $fixtureName);
+        return sprintf('%s/Fixtures/%s', __DIR__, $fixtureName);
     }
 }

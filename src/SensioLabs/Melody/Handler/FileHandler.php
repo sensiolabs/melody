@@ -3,6 +3,7 @@
 namespace SensioLabs\Melody\Handler;
 
 use SensioLabs\Melody\Resource\LocalResource;
+use SensioLabs\Melody\Resource\Metadata;
 
 /**
  * Class FileHandler.
@@ -25,6 +26,16 @@ class FileHandler implements ResourceHandlerInterface
      */
     public function createResource($filename)
     {
-        return new LocalResource($filename, file_get_contents($filename));
+        $stat = stat($filename);
+        $metadata = new Metadata(
+            $stat['ino'],
+            $stat['uid'],
+            new \DateTime(date('c', $stat['ctime'])),
+            new \DateTime(date('c', $stat['mtime'])),
+            1,
+            sprintf('file://%s', realpath($filename))
+        );
+
+        return new LocalResource($filename, file_get_contents($filename), $metadata);
     }
 }

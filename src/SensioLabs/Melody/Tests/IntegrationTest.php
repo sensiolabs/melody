@@ -32,6 +32,15 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('Hello world', $output);
     }
 
+    public function testRunWithShebang()
+    {
+        $output = $this->melodyRun('shebang.php');
+        $this->assertContains('Loading composer repositories with package information', $output);
+        $this->assertContains('Updating dependencies (including require-dev)', $output);
+        $this->assertContains('Installing twig/twig (v1.16.0)', $output);
+        $this->assertContains('Hello world', $output);
+    }
+
     public function testRunWithCache()
     {
         $this->melodyRun('hello-world.php');

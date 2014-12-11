@@ -15,7 +15,7 @@ class ResourceParser
 {
     public function parseResource(Resource $resource)
     {
-        preg_match('{^<\?php\s*<<<CONFIG(?P<config>.+)CONFIG;(?P<code>.+)$}sU', $resource->getContent(), $matches);
+        preg_match('{^(?:#![^\n]+\n)?<\?php\s*<<<CONFIG(?P<config>.+)CONFIG;(?P<code>.+)$}sU', $resource->getContent(), $matches);
 
         if (!$matches) {
             throw new ParseException('Impossible to parse the content of the document.');

@@ -43,6 +43,6 @@ class GistHandler implements ResourceHandlerInterface
         // Fetch the only element in the array
         $file = current($files);
 
-        return new Resource($uri, $file['content'], false);
+        return new Resource($file['content']);
     }
 }

@@ -43,7 +43,6 @@ class FileHandlerTest extends \PHPUnit_Framework_TestCase
         $resource = $this->handler->createResource($filename);
 
         $this->assertInstanceOf('SensioLabs\Melody\Resource\Resource', $resource);
-        $this->assertSame($filename, $resource->getFilename());
         $this->assertSame(file_get_contents($filename), $resource->getContent());
     }
 }

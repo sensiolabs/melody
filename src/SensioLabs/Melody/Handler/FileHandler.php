@@ -2,7 +2,7 @@
 
 namespace SensioLabs\Melody\Handler;
 
-use SensioLabs\Melody\Resource\Resource;
+use SensioLabs\Melody\Resource\LocalResource;
 
 /**
  * Class FileHandler
@@ -25,6 +25,6 @@ class FileHandler implements ResourceHandlerInterface
      */
     public function createResource($filename)
     {
-        return new Resource($filename, file_get_contents($filename), true);
+        return new LocalResource($filename, file_get_contents($filename));
     }
 }

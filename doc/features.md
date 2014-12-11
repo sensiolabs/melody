@@ -94,7 +94,7 @@ be useful to e.g. start a php web server or define php.ini settings.
 <?php
 <<<CONFIG
 packages:
-    - silex/silex
+    - silex/silex: *
 php-options:
     - "-S"
     - "localhost:8000"
@@ -105,9 +105,10 @@ $app->get('/hello/{name}', function ($name) use ($app) {
     return 'Hello '.$app->escape($name);
 });
 $app->run();
-```
+````
 
 Beware of YAML syntax:
 
-* `- silex/silex: ~1.2` without double quote is an invalid YAML
-* `- -S` without double quote is an array of arrays
+* `- silex/silex: *` without quotes is an invalid YAML
+* `- silex/silex: ~1.2` without quotes is a YAML object and refused by melody
+* `- -S` without quotes is an array of arrays

@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by jeremy-derusse at 2014-12-11T10:03:18Z
+
+Can you, please, add the remarks from @stof (https://github.com/sensiolabs/melody/pull/24)
+
+here is my proposal
+
+```
+<?php
+<<<CONFIG
+packages:
+    - "silex/silex: *"
+php-options:
+    - "-S"
+    - "localhost:8000"
+CONFIG;
+
+$app = new Silex\Application();
+$app->get('/hello/{name}', function ($name) use ($app) {
+    return 'Hello '.$app->escape($name);
+});
+$app->run();
+
+Beware of YAML syntax:
+* `- silex/silex: *` without quote is an invalid YAML
+* `- silex/silex: ~1.2` without quote is a YAML object and refused by melody
+* `- -S` without quote is an array of arrays
+```
+
+---------------------------------------------------------------------------
+
+by jeremy-derusse at 2014-12-11T10:37:36Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-11T13:41:43Z
+
+@javiereguiluz ¡hola! ;)
+
+Can you also transform all `php melody.phar` to `melody` because we want to promote the [global installation](http://melody.sensiolabs.org/#btn_globally-manual)
+
+Thanks

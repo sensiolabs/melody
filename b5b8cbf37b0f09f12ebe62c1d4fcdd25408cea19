@@ -1,0 +1,42 @@
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-12T11:14:08Z
+
+Could you add a unit test?
+
+---------------------------------------------------------------------------
+
+by staabm at 2014-12-12T11:42:31Z
+
+Should the regex be more strict, so it allows only a shebang before the actual code?
+
+---------------------------------------------------------------------------
+
+by jeremy-derusse at 2014-12-12T11:45:12Z
+
+@staabm Is there a reason to require that the script **must** start by `<?php` or `#!` ?
+
+---------------------------------------------------------------------------
+
+by staabm at 2014-12-12T11:46:23Z
+
+As the regex looks with this change melody would also run a script which is contained e.g. Within the contents of a blogpost etc..?
+
+---------------------------------------------------------------------------
+
+by jeremy-derusse at 2014-12-12T11:49:01Z
+
+You're right, even if it is unlikely...What do you think @lyrixx ?
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-12T13:08:34Z
+
+I'm not sure to understand everything here.
+IMHO, the regex should be very strict, to avoid any weird side effect.
+
+---------------------------------------------------------------------------
+
+by jeremy-derusse at 2014-12-13T15:07:07Z
+
+Add test and and enforce regexp

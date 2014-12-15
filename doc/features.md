@@ -18,8 +18,22 @@ Supported formats:
 * Username/Id: `lyrixx/565752f13499a3fa17d9`
 * Gist URI: `https://gist.github.com/lyrixx/565752f13499a3fa17d9`
 
-Please note that `melody` can only handle gists which contain a single PHP 
+Please note that `melody` can only handle gists which contain a single PHP
 file. It will report an error otherwise.
+
+Run streamed script
+-------------------
+
+You can run scripts from every supported streams (list streams with
+`stream_get_wrappers`):
+
+* `http`: `http://my.private/snippets/test.php`
+* `ftp`: `ftp://user:password@server/public/test.php`
+* `php`: `php://stdin`
+* `data`: `data://text/plain;base64,SSBsb3ZlIFBIUAo[...]==`
+* `phar`: `phar:///opt/resource.phar/test.php`
+* `zlib`: `compress.zlib:///opt/resource.gz`
+* `bzip2`: `compress.bzip2:///opt/resource.bz2`
 
 Caching
 -------
@@ -50,11 +64,11 @@ There are two ways of downloading a package: `source` and `dist`. By default
 Melody will use the `dist` mode.
 
 If `--prefer-source` is enabled, Melody will use the `source` mode and install
-from source if there is one. The `--prefer-source` can be used if you don't 
-want Composer to download release archives but do `git clone` instead. It's 
+from source if there is one. The `--prefer-source` can be used if you don't
+want Composer to download release archives but do `git clone` instead. It's
 very useful if you suffer from API throttling.
 
-Only use this method if you know what you're doing, because `--prefer-source` 
+Only use this method if you know what you're doing, because `--prefer-source`
 is not efficient at all.
 
 ```bash
@@ -77,17 +91,17 @@ melody will catch them. To use options, you must prepend your options by
 ` -- `.
 
 ```bash
-$ melody run test.php -- -a -arg1 arg2
+$ melody run test.php -- -a --arg1 arg2
 ```
 
 Front matter
 ------------
 
 The script you want to run with melody **must** start with a YAML configuration
-embedded in a `heredoc` string named `CONFIG`. This config must contain at 
+embedded in a `heredoc` string named `CONFIG`. This config must contain at
 least one package to install.
 
-Optionally you can provide a list of options to pass to php command. It could 
+Optionally you can provide a list of options to pass to php command. It could
 be useful to e.g. start a php web server or define php.ini settings.
 
 ```php

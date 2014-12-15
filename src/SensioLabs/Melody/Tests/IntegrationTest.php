@@ -68,6 +68,50 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('value', $output);
     }
 
+    public function provideStreams()
+    {
+        return array(
+            array('data', 'text/plain;base64,PD9waHANCjw8PENPTkZJRw0KcGFja2FnZXM6DQogICAgLSAidHdpZy90d2lnOjEuMTYuMCINCkNPTkZJRzsNCg0KJHR3aWcgPSBuZXcgVHdpZ19FbnZpcm9ubWVudChuZXcgVHdpZ19Mb2FkZXJfQXJyYXkoYXJyYXkoDQogICAgJ2ZvbycgPT4gJ0hlbGxvIHt7IGluY2x1ZGUoImJhciIpIH19JywNCiAgICAnYmFyJyA9PiAnd29ybGQnDQopKSk7DQoNCmVjaG8gJHR3aWctPnJlbmRlcignZm9vJyk7DQo='),
+            array('phar', $this->getFixtureFile('hello-world.phar/hello-world.php')),
+            array('compress.zlib', $this->getFixtureFile('hello-world.php.gz')),
+        );
+    }
+
+    /**
+     * @dataProvider provideStreams
+     */
+    public function testRunStream($protocol, $fixture)
+    {
+        $output = $this->melodyRunStream($protocol, $fixture);
+        $this->assertContains('Hello world', $output);
+    }
+
+    private function melodyRunStream($protocol, $fixture, array $options = array())
+    {
+        $melody = new Melody();
+
+        $filename = sprintf('%s://%s', $protocol, $fixture);
+
+        $options = array_replace(array(
+            'prefer_source' => false,
+            'no_cache' => false,
+        ), $options);
+
+        $configuration = new RunConfiguration($options['no_cache'], $options['prefer_source']);
+
+        $output = null;
+        $cliExecutor = function (Process $process, $useProcessHelper) use (&$output) {
+            $process->setTty(false);
+            $process->mustRun(function ($type, $text) use (&$output) {
+                $output .= $text;
+            });
+        };
+
+        $melody->run($filename, array(), $configuration, $cliExecutor);
+
+        return $output;
+    }
+
     public function testRunWithPhpOptions()
     {
         $output = $this->melodyRun('php-options.php');
@@ -78,7 +122,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     {
         $melody = new Melody();
 
-        $filename = sprintf('%s/Integration/%s', __DIR__, $fixture);
+        $filename = $this->getFixtureFile($fixture);
 
         $options = array_replace(array(
             'prefer_source' => false,
@@ -103,5 +147,10 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     private function cleanCache()
     {
         $this->fs->remove(sys_get_temp_dir().'/melody');
+    }
+
+    private function getFixtureFile($fixtureName)
+    {
+        return sprintf('%s/Integration/%s', __DIR__, $fixtureName);
     }
 }

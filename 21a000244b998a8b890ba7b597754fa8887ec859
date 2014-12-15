@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-15T17:45:28Z
+
+I don't really like the fact that `bin/melody  run` hang, and wait for a script.
+Am I the only one? If so, I'm gonna merge this one.
+If not, does anyone have a nice solution?
+
+---------------------------------------------------------------------------
+
+by jeremy-derusse at 2014-12-15T17:55:01Z
+
+I can rollback to a previous draft where melody had 2 command `run` and `stdin` which clearly separate the 2 features.
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-15T18:14:03Z
+
+I think I prefer the current version than a new command. And **you**, what do you think?
+
+---------------------------------------------------------------------------
+
+by jeremy-derusse at 2014-12-15T21:57:27Z
+
+Honestly, I removed the 2 commands for my previous draft because i didn't like it.
+BTW I also didn't like a command with toggle option (an option ro read stdin and an other to read a required parameter).
+My favorite feature was the one I implemented (an optional parameter "script" => read the stdin when missing). It could be disturbing, but not more than a `$ php`
+
+---------------------------------------------------------------------------
+
+by jeremy-derusse at 2014-12-15T21:59:26Z
+
+Anyway, I remove this "stdin command" feature to leave the "stream handler".
+If a user want read the stdin, he can run `melody run php://stdin`
+
+I'll propose the "stdin command" in an other PR.

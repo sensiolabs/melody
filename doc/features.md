@@ -61,6 +61,16 @@ is not efficient at all.
 $ melody run --prefer-source test.php
 ```
 
+Prefered composer
+---------
+
+By default, Melody will use the Composer globally, if you would use a specific composer.phar
+you can do this :
+
+```bash
+$ php melody.phar run --composer-executable="/path/to/composer.phar" test.php
+```
+
 Arguments
 ---------
 

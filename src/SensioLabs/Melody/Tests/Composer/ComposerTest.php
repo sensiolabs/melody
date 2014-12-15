@@ -39,4 +39,17 @@ class ComposerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertStringEndsWith(" 'require' 'symfony/symfony:*' '--prefer-source'", $process->getCommandLine());
     }
+
+    public function testBuildProcessWithComposerExecutable()
+    {
+        $this->composer = new Composer('path/to/composer.phar');
+
+        $packages = array(
+            'symfony/symfony' => '*',
+        );
+
+        $process = $this->composer->buildProcess($packages, __DIR__, true);
+
+        $this->assertStringStartsWith("'php' 'path/to/composer.phar' 'require' 'symfony/symfony:*' ", str_replace('"', '\'', $process->getCommandLine()));
+    }
 }

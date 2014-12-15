@@ -83,9 +83,10 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         $options = array_replace(array(
             'prefer_source' => false,
             'no_cache' => false,
+            'composer_executable' => false,
         ), $options);
 
-        $configuration = new RunConfiguration($options['no_cache'], $options['prefer_source']);
+        $configuration = new RunConfiguration($options['no_cache'], $options['prefer_source'], $options['composer_executable']);
 
         $output = null;
         $cliExecutor = function (Process $process, $useProcessHelper) use (&$output) {

@@ -22,8 +22,9 @@ class ConfigurationParser
 
         $packages = $this->parsePackages($config);
         $phpOptions = $this->parsePhpOptions($config);
+        $repositories = $this->parseRepositories($config);
 
-        return new ScriptConfiguration($packages, $phpOptions);
+        return new ScriptConfiguration($packages, $phpOptions, $repositories);
     }
 
     private function parsePackages($config)
@@ -109,5 +110,45 @@ class ConfigurationParser
         }
 
         return $phpOptions;
+    }
+
+    private function parseRepositories($config)
+    {
+        if (!array_key_exists('repositories', $config)) {
+            return array();
+        }
+
+        if (!is_array($config['repositories'])) {
+            throw new ParseException('The repositories configuration should be an array.');
+        }
+
+        $repositories = array();
+
+        foreach ($config['repositories'] as $repository) {
+            $repositories[] = $this->validateRepository($repository);
+        }
+
+        return $repositories;
+    }
+
+    private function validateRepository($repository)
+    {
+        if (empty($repository['type'])) {
+            throw new ParseException('The repository type should not be empty.');
+        }
+
+        if (!preg_match('/^[a-z]+$/', $repository['type'])) {
+            throw new ParseException(sprintf('The repository type "%s" should contains only alphabetical characters.', $repository['type']));
+        }
+
+        if (empty($repository['url'])) {
+            throw new ParseException('The repository url should not be empty.');
+        }
+
+        if (false === filter_var($repository['url'], FILTER_VALIDATE_URL)) {
+            throw new ParseException(sprintf('The repository url "%s" is not valid.', $repository['url']));
+        }
+
+        return $repository;
     }
 }

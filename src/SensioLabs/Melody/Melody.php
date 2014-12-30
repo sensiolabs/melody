@@ -60,6 +60,7 @@ class Melody
         if ($workingDirectory->isNew()) {
             $workingDirectory->create();
 
+            $this->composer->configureRepositories($script->getRepositories(), $workingDirectory->getPath());
             $process = $this->composer->buildProcess($script->getPackages(), $workingDirectory->getPath(), $configuration->preferSource());
 
             $cliExecutor($process, true);

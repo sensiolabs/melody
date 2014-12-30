@@ -92,4 +92,71 @@ class ConfigurationParserTest extends \PHPUnit_Framework_TestCase
         $expected = array('-S', 'localhost:8000');
         $this->assertSame($expected, $config->getPhpOptions());
     }
+
+    public function testParseRepositories()
+    {
+        $config = $this->parser->parseConfiguration(array(
+            'packages' => array(
+                'symfony/finder',
+                'symfony/console',
+            ),
+            'repositories' => array(
+                array(
+                    'type' => 'vcs',
+                    'url' => 'https://github.com/symfony/Finder.git',
+                ),
+                array(
+                    'type' => 'vcs',
+                    'url' => 'file:///home/symfony/Console',
+                ),
+            ),
+        ));
+
+        $this->assertInstanceOf('SensioLabs\Melody\Configuration\ScriptConfiguration', $config);
+        $expected = array(
+            array(
+                'type' => 'vcs',
+                'url' => 'https://github.com/symfony/Finder.git',
+            ),
+            array(
+                'type' => 'vcs',
+                'url' => 'file:///home/symfony/Console',
+            ),
+        );
+        $this->assertSame($expected, $config->getRepositories());
+    }
+
+    public function provideRepositoriesError()
+    {
+        return array(
+            array(array('repositories' => array(array('type' => 'vcs'))), 'The repository url should not be empty.'),
+            array(array('repositories' => array(array('url' => 'https://github.com/symfony/Finder.git'))), 'The repository type should not be empty.'),
+            array(array('repositories' => array(array('type' => 'vcs', 'url' => 'symfony/Finder'))), 'The repository url "symfony/Finder" is not valid.'),
+            array(array('repositories' => array(array('type' => 'vc s', 'url' => 'https://github.com/symfony/Finder.git'))), 'The repository type "vc s" should contains only alphabetical characters.'),
+            array(array('repositories' => array(array('type' => 'vcs', 'url' => 'https:/github.com'))), 'The repository url "https:/github.com" is not valid.'),
+            array(
+                array(
+                    'repositories' => array(
+                        array('type' => 'vcs', 'url' => 'https://github.com/symfony/Finder.git'),
+                        array('type' => 'vcs', 'url' => 'https:/github.com'),
+                    )
+                ),
+                'The repository url "https:/github.com" is not valid.'),
+        );
+    }
+
+    /**
+     * @dataProvider provideRepositoriesError
+     */
+    public function testParseRepositoriesError($repositories, $exception)
+    {
+        $this->setExpectedException('SensioLabs\Melody\Exception\ParseException', $exception);
+        $config = array(
+            'packages' => array(
+                'symfony/finder',
+            )
+        ) + $repositories;
+
+        $this->parser->parseConfiguration($config);
+    }
 }

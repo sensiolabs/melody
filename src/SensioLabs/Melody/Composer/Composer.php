@@ -82,6 +82,14 @@ class Composer
         return end($outputByLines);
     }
 
+    public function configureRepositories(array $repositories, $dir)
+    {
+        if (!empty($repositories)) {
+            $composerJsonPath = $dir . '/composer.json';
+            file_put_contents($composerJsonPath, json_encode(array('repositories' => $repositories)));
+        }
+    }
+
     /**
      * Guess and build the command to call composer.
      *

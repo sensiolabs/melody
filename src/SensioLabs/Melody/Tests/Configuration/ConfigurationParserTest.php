@@ -92,4 +92,117 @@ class ConfigurationParserTest extends \PHPUnit_Framework_TestCase
         $expected = array('-S', 'localhost:8000');
         $this->assertSame($expected, $config->getPhpOptions());
     }
+
+    public function testParseRepositories()
+    {
+        $config = $this->parser->parseConfiguration(array(
+            'packages' => array(
+                'symfony/finder',
+                'symfony/console',
+            ),
+            'repositories' => array(
+                array(
+                    'type' => 'vcs',
+                    'url' => 'https://github.com/symfony/Finder.git',
+                ),
+                array(
+                    'type' => 'vcs',
+                    'url' => 'file:///home/symfony/Console',
+                ),
+                array(
+                    'type' => 'vcs',
+                    'url' => 'http://svn.example.org/projectA/',
+                    'trunk-path' => 'Trunk',
+                    'branches-path' => 'Branches',
+                    'tags-path' => 'Tags',
+                    'svn-cache-credentials' => false,
+                ),
+                array(
+                    'type' => 'pear',
+                    'url' => 'http://pear.foobar.repo',
+                    'vendor-alias' => 'foobar',
+                ),
+                array(
+                    'type' => 'package',
+                    'package' => array(
+                        'name' => 'smarty/smarty',
+                        'version' => '3.1.7',
+                        'dist' => array(
+                            'url' => 'http://www.smarty.net/files/Smarty-3.1.7.zip',
+                            'type' => 'zip',
+                        ),
+                        'source' => array(
+                            'url' => 'http://smarty-php.googlecode.com/svn/',
+                            'type' => 'svn',
+                            'reference' => 'tags/Smarty_3_1_7/distribution/',
+                        ),
+                        'autoload' => array(
+                            'classmap' => array('libs/'),
+                        ),
+                    )
+                ),
+            ),
+        ));
+
+        $this->assertInstanceOf('SensioLabs\Melody\Configuration\ScriptConfiguration', $config);
+        $expected = array(
+            array(
+                'type' => 'vcs',
+                'url' => 'https://github.com/symfony/Finder.git',
+            ),
+            array(
+                'type' => 'vcs',
+                'url' => 'file:///home/symfony/Console',
+            ),
+            array(
+                'type' => 'vcs',
+                'url' => 'http://svn.example.org/projectA/',
+                'trunk-path' => 'Trunk',
+                'branches-path' => 'Branches',
+                'tags-path' => 'Tags',
+                'svn-cache-credentials' => false,
+            ),
+            array(
+                'type' => 'pear',
+                'url' => 'http://pear.foobar.repo',
+                'vendor-alias' => 'foobar',
+            ),
+            array(
+                'type' => 'package',
+                'package' => array(
+                    'name' => 'smarty/smarty',
+                    'version' => '3.1.7',
+                    'dist' => array(
+                        'url' => 'http://www.smarty.net/files/Smarty-3.1.7.zip',
+                        'type' => 'zip',
+                    ),
+                    'source' => array(
+                        'url' => 'http://smarty-php.googlecode.com/svn/',
+                        'type' => 'svn',
+                        'reference' => 'tags/Smarty_3_1_7/distribution/',
+                    ),
+                    'autoload' => array(
+                        'classmap' => array('libs/'),
+                    ),
+                )
+            ),
+        );
+        $this->assertSame($expected, $config->getRepositories());
+    }
+
+    public function testParseRepositoriesError()
+    {
+        $this->setExpectedException(
+            'SensioLabs\Melody\Exception\ParseException',
+            'The repositories configuration should be an array'
+        );
+        $config = array(
+            'packages' => array(
+                'symfony/finder',
+            ),
+            'repositories' => 'invalid',
+        );
+
+        $this->parser->parseConfiguration($config);
+    }
 }

@@ -51,7 +51,7 @@ class Melody
 
         $script = $this->scriptBuilder->buildScript($resource, $arguments);
 
-        $workingDirectory = $this->wdFactory->createTmpDir($script->getPackages());
+        $workingDirectory = $this->wdFactory->createTmpDir($script->getPackages(), $script->getRepositories());
 
         if ($configuration->noCache()) {
             $workingDirectory->clear();
@@ -60,7 +60,12 @@ class Melody
         if ($workingDirectory->isNew()) {
             $workingDirectory->create();
 
-            $process = $this->composer->buildProcess($script->getPackages(), $workingDirectory->getPath(), $configuration->preferSource());
+            $process = $this->composer->buildProcess(
+                $script->getPackages(),
+                $script->getRepositories(),
+                $workingDirectory->getPath(),
+                $configuration->preferSource()
+            );
 
             $cliExecutor($process, true);
 

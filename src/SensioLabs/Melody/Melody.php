@@ -51,7 +51,7 @@ class Melody
 
         $script = $this->scriptBuilder->buildScript($resource, $arguments);
 
-        $workingDirectory = $this->wdFactory->createTmpDir($script->getPackages());
+        $workingDirectory = $this->wdFactory->createTmpDir($script->getPackages(), $script->getRepositories());
 
         if ($configuration->noCache()) {
             $workingDirectory->clear();

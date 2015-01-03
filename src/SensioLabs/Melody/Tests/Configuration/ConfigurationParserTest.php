@@ -126,36 +126,18 @@ class ConfigurationParserTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $config->getRepositories());
     }
 
-    public function provideRepositoriesError()
+    public function testParseRepositoriesError()
     {
-        return array(
-            array(array('repositories' => array(array('type' => 'vcs'))), 'The repository url should not be empty.'),
-            array(array('repositories' => array(array('url' => 'https://github.com/symfony/Finder.git'))), 'The repository type should not be empty.'),
-            array(array('repositories' => array(array('type' => 'vcs', 'url' => 'symfony/Finder'))), 'The repository url "symfony/Finder" is not valid.'),
-            array(array('repositories' => array(array('type' => 'vc s', 'url' => 'https://github.com/symfony/Finder.git'))), 'The repository type "vc s" should contains only alphabetical characters.'),
-            array(array('repositories' => array(array('type' => 'vcs', 'url' => 'https:/github.com'))), 'The repository url "https:/github.com" is not valid.'),
-            array(
-                array(
-                    'repositories' => array(
-                        array('type' => 'vcs', 'url' => 'https://github.com/symfony/Finder.git'),
-                        array('type' => 'vcs', 'url' => 'https:/github.com'),
-                    )
-                ),
-                'The repository url "https:/github.com" is not valid.'),
+        $this->setExpectedException(
+            'SensioLabs\Melody\Exception\ParseException',
+            'The repositories configuration should be an array'
         );
-    }
-
-    /**
-     * @dataProvider provideRepositoriesError
-     */
-    public function testParseRepositoriesError($repositories, $exception)
-    {
-        $this->setExpectedException('SensioLabs\Melody\Exception\ParseException', $exception);
         $config = array(
             'packages' => array(
                 'symfony/finder',
-            )
-        ) + $repositories;
+            ),
+            'repositories' => 'invalid',
+        );
 
         $this->parser->parseConfiguration($config);
     }

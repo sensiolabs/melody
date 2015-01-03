@@ -127,3 +127,22 @@ Beware that `CONFIG` section contents must comply with YAML syntax restrictions:
 * `- "silex/silex: *"` without quotes is an invalid YAML.
 * `- "silex/silex: ~1.2"` without quotes is a YAML object and refused by melody.
 * `- "-S"` without quotes is an array of arrays.
+
+
+Using fork and private repositories
+-----------------------------------
+
+If you need to use packages not registred in Packagist repository, you can specify repositories
+in the YAML configuration. See Composer documentation https://getcomposer.org/doc/04-schema.md#repositories
+
+```php
+<?php
+
+<<<CONFIG
+repositories:
+    - type: vcs
+      url: https://github.com/fabpot/Pimple
+packages:
+    - "pimple/pimple: 1.0.2"
+CONFIG;
+```

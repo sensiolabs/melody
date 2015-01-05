@@ -43,11 +43,11 @@ class Melody
         $this->runner = new Runner($this->composer->getVendorDir());
     }
 
-    public function run($filename, array $arguments, RunConfiguration $configuration, $cliExecutor)
+    public function run($resourceName, array $arguments, RunConfiguration $configuration, $cliExecutor)
     {
         $this->garbageCollector->run();
 
-        $resource = $this->createResource($filename);
+        $resource = $this->createResource($resourceName);
 
         $script = $this->scriptBuilder->buildScript($resource, $arguments);
 
@@ -72,16 +72,16 @@ class Melody
         $cliExecutor($process, false);
     }
 
-    private function createResource($filename)
+    private function createResource($resourceName)
     {
         foreach ($this->handlers as $handler) {
-            if (!$handler->supports($filename)) {
+            if (!$handler->supports($resourceName)) {
                 continue;
             }
 
-            return $handler->createResource($filename);
+            return $handler->createResource($resourceName);
         }
 
-        throw new \LogicException(sprintf('No handler found for resource "%s".', $filename));
+        throw new \LogicException(sprintf('No handler found for resource "%s".', $resourceName));
     }
 }

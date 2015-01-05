@@ -13,9 +13,11 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ResourceParser
 {
+    const MELODY_PATTERN = '{^(?:#![^\n]+\n)?<\?php\s*<<<CONFIG(?P<config>.+)CONFIG;(?P<code>.+)$}sU';
+    
     public function parseResource(Resource $resource)
     {
-        preg_match('{^(?:#![^\n]+\n)?<\?php\s*<<<CONFIG(?P<config>.+)CONFIG;(?P<code>.+)$}sU', $resource->getContent(), $matches);
+        preg_match(self::MELODY_PATTERN, $resource->getContent(), $matches);
 
         if (!$matches) {
             throw new ParseException('Impossible to parse the content of the document.');

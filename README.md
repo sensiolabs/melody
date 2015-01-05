@@ -12,6 +12,7 @@ CONFIG;
 
 $finder = Symfony\Component\Finder\Finder::create()
     ->in(__DIR__)
+    ->files()
     ->name('*.php')
 ;
 

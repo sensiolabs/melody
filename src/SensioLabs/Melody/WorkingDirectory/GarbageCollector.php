@@ -34,7 +34,7 @@ class GarbageCollector
     {
         $maxATime = time() - self::TTL;
 
-        $files = Finder::create()
+        $bootstrapFiles = Finder::create()
             ->in($this->storePath)
             ->depth(1)
             ->name(Runner::BOOTSTRAP_FILENAME)
@@ -44,11 +44,21 @@ class GarbageCollector
         ;
 
         $directories = array();
-
-        foreach ($files as $file) {
+        foreach ($bootstrapFiles as $file) {
             $directories[] = dirname($file);
         }
 
         $this->filesystem->remove($directories);
+        
+        $rootFiles = Finder::create()
+            ->files()
+            ->in($this->storePath)
+            ->depth(0)
+            ->filter(function (SplFileInfo $d) use ($maxATime) {
+                return $d->getATime() < $maxATime;
+            })
+        ;
+        
+        $this->filesystem->remove($rootFiles);
     }
 }

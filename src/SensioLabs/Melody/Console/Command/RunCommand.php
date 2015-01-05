@@ -63,8 +63,9 @@ EOT
 
         $processHelper = $this->getHelperSet()->get('process');
 
-        $cliExecutor = function (Process $process, $useProcessHelper) use ($output, $processHelper) {
-            if ($useProcessHelper) {
+        $cliExecutor = function (Process $process, $verbose) use ($output, $processHelper) {
+            if ($verbose) {
+                // print debugging output for the build process
                 $processHelper->mustRun($output, $process);
             } else {
                 $callback = function ($type, $text) use ($output) {

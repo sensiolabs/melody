@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by staabm at 2015-01-05T14:50:22Z
+
+travis broke because of reading timeouts on packagist

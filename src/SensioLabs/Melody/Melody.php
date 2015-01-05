@@ -24,13 +24,14 @@ class Melody
     private $garbageCollector;
     private $handlers;
     private $wdFactory;
+    private $storagePath;
     private $scriptBuilder;
     private $composer;
     private $runner;
 
     public function __construct()
     {
-        $storagePath = sprintf('%s/melody', sys_get_temp_dir());
+        $storagePath = $this->storagePath = sprintf('%s/melody', sys_get_temp_dir());
         $this->garbageCollector = new GarbageCollector($storagePath);
         $this->handlers = array(
             new FileHandler(),
@@ -70,6 +71,14 @@ class Melody
         $process = $this->runner->getProcess($script, $workingDirectory->getPath());
 
         $cliExecutor($process, false);
+    }
+    
+    /**
+     * @return string Returns the base-path used for temp and working files
+     */
+    public function getStoragePath()
+    {
+        return $this->storagePath;
     }
 
     private function createResource($filename)

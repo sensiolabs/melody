@@ -132,8 +132,9 @@ Beware that `CONFIG` section contents must comply with YAML syntax restrictions:
 Using fork and private repositories
 -----------------------------------
 
-If you need to use packages not registred in Packagist repository, you can specify repositories
-in the YAML configuration. See Composer documentation https://getcomposer.org/doc/04-schema.md#repositories
+If you need to use packages not registred in Packagist repository, you can
+specify repositories in the YAML configuration.
+See [composer documention](https://getcomposer.org/doc/05-repositories.md).
 
 ```php
 <?php
@@ -141,8 +142,8 @@ in the YAML configuration. See Composer documentation https://getcomposer.org/do
 <<<CONFIG
 repositories:
     - type: vcs
-      url: https://github.com/fabpot/Pimple
+      url: https://example.com/vendor/my-private-repo.git
 packages:
-    - "pimple/pimple: 1.0.2"
+    - "vendor/package-name: 1.0.2"
 CONFIG;
 ```

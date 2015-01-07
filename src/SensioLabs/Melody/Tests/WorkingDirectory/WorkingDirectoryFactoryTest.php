@@ -51,6 +51,130 @@ class WorkingDirectoryFactoryTest extends \PHPUnit_Framework_TestCase
                 ),
                 array()
             ),
+            array(
+                array(
+                    'symfony/symfony' => '*',
+                    'sensiolabs/melody' => '*',
+                ),
+                array(
+                    array(
+                        'type' => 'vcs',
+                        'url' => 'https://example.com/symfony',
+                    ),
+                    array(
+                        'type' => 'vcs',
+                        'url' => 'https://example.com/melody',
+                    ),
+                ),
+                array(
+                    'symfony/symfony' => '*',
+                    'sensiolabs/melody' => '*',
+                ),
+                array(
+                    array(
+                        'type' => 'vcs',
+                        'url' => 'https://example.com/melody',
+                    ),
+                    array(
+                        'type' => 'vcs',
+                        'url' => 'https://example.com/symfony',
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    'symfony/symfony' => '*',
+                    'sensiolabs/melody' => '*',
+                ),
+                array(
+                    array(
+                        'type' => 'vcs',
+                        'url' => 'https://example.com/symfony',
+                    ),
+                    array(
+                        'type' => 'vcs',
+                        'url' => 'https://example.com/melody',
+                    ),
+                ),
+                array(
+                    'symfony/symfony' => '*',
+                    'sensiolabs/melody' => '*',
+                ),
+                array(
+                    array(
+                        'url' => 'https://example.com/melody',
+                        'type' => 'vcs',
+                    ),
+                    array(
+                        'url' => 'https://example.com/symfony',
+                        'type' => 'vcs',
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    'symfony/symfony' => '*',
+                    'sensiolabs/melody' => '*',
+                    'smarty/smarty' => '*',
+                ),
+                array(
+                    array(
+                        'type' => 'vcs',
+                        'url' => 'https://example.com/symfony',
+                    ),
+                    array(
+                        'type' => 'vcs',
+                        'url' => 'https://example.com/melody',
+                    ),
+                    array(
+                        'type' => 'package',
+                        'package' => array(
+                        'name' => 'smarty/smarty',
+                            "version" => "3.1.7",
+                            "dist" => array(
+                                "url" => "https://www.smarty.net/files/Smarty-3.1.7.zip",
+                                "type" => "zip",
+                            ),
+                            "source" => array(
+                                "url" => "https://smarty-php.googlecode.com/svn/",
+                                "type" => "svn",
+                                "reference" => "tags/Smarty_3_1_7/distribution/",
+                            ),
+                        )
+                    ),
+                ),
+                array(
+                    'symfony/symfony' => '*',
+                    'sensiolabs/melody' => '*',
+                    'smarty/smarty' => '*',
+                ),
+                array(
+                    array(
+                        'type' => 'package',
+                        'package' => array(
+                            'name' => 'smarty/smarty',
+                            "version" => "3.1.7",
+                            "source" => array(
+                                "url" => "https://smarty-php.googlecode.com/svn/",
+                                "type" => "svn",
+                                "reference" => "tags/Smarty_3_1_7/distribution/",
+                            ),
+                            "dist" => array(
+                                "url" => "https://www.smarty.net/files/Smarty-3.1.7.zip",
+                                "type" => "zip",
+                            ),
+                        )
+                    ),
+                    array(
+                        'url' => 'https://example.com/melody',
+                        'type' => 'vcs',
+                    ),
+                    array(
+                        'url' => 'https://example.com/symfony',
+                        'type' => 'vcs',
+                    ),
+                ),
+            ),
         );
     }
 

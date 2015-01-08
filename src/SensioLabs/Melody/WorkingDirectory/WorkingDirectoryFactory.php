@@ -39,10 +39,7 @@ class WorkingDirectoryFactory
         if (empty($repositories)) {
             $config = $packages;
         } else {
-            //var_dump($repositories);
-            //var_dump("==============\n");
             $this->sortRepositories($repositories);
-            //var_dump($repositories);
             $config = array($repositories, $packages);
         }
 
@@ -52,48 +49,45 @@ class WorkingDirectoryFactory
         return 'a'.hash('sha256', serialize($config));
     }
 
-    private function extractRepositoriesUrls($repositories)
+    private function sortRepositories(array &$repositories)
+    {
+        $this->ksortRecursive($repositories);
+        array_multisort($this->getRepositoriesSortOrder($repositories), $repositories);
+    }
+
+    private function ksortRecursive(&$array)
+    {
+        ksort($array);
+        foreach ($array as $k => $v) {
+            if (is_array($v)) {
+                $this->ksortRecursive($array[$k]);
+            }
+        }
+    }
+
+    private function getRepositoriesSortOrder(array $repositories)
+    {
+        $urlsByRepositories = $this->extractRepositoriesUrls($repositories);
+        $stringifiedUrlsByRepositories = array_map(function ($urls) {
+            return implode(' ', $urls);
+        }, $urlsByRepositories);
+
+        return $stringifiedUrlsByRepositories;
+    }
+
+    private function extractRepositoriesUrls(array $repositories)
     {
         $urls = array();
-        $it = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($repositories));
+        $recursiveIteratorRepositories = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($repositories));
+        $urlIterator = new \CallbackFilterIterator($recursiveIteratorRepositories, function ($current, $key, $iterator) {
+            return 'url' === $key;
+        });
 
-        foreach ($it as $key => $leaf) {
-            if ('url' === $key) {
-                $repositoryKey = $it->getSubIterator(0)->key();
-                $urls[$repositoryKey][] = $leaf;
-            }
+        foreach ($urlIterator as $url) {
+            $repositoryPosition = $urlIterator->getSubIterator(0)->key();
+            $urls[$repositoryPosition][] = $url;
         }
 
         return $urls;
-    }
-
-    private function sortRepositories(array &$repositories)
-    {
-
-        var_dump($this->extractRepositoriesUrls($repositories));
-die('ieee');
-        // trier les clés du tableau de façon recursive
-        // cherche la clé url
-//        $urls = array_map(function ($item) {
-//            // chercher la clé url
-//            if (isset($item['url'])) {
-//                return $item['url'];
-//            }
-//            if (isset($item['package']['dist']['url'])) {
-//                return $item['package']['dist']['url'];
-//            }
-//            if (isset($item['package']['source']['url'])) {
-//                return $item['package']['source']['url'];
-//            }
-//
-//        }, $repositories);
-//
-//        // trier le repositories
-//        array_multisort($urls, \SORT_ASC, $repositories);
-//        var_dump('uuuuuuuuuu');
-//        var_dump($repositories);
-//        var_dump('pppppppppuuuuuuuuuu');
-//        $repositories = array_map('serialize', $repositories);
-//        sort($repositories);
     }
 }

@@ -31,15 +31,15 @@ class WorkingDirectoryFactoryTest extends \PHPUnit_Framework_TestCase
     public static function sameConfigProvider()
     {
         return array(
-            array(
+            'no_config' => array(
                 array(), array(),
                 array(), array()
             ),
-            array(
+            'one_package' => array(
                 array('symfony/symfony' => '*'), array(),
                 array('symfony/symfony' => '*'), array()
             ),
-            array(
+            'packages_order' => array(
                 array(
                     'symfony/symfony' => '*',
                     'sensiolabs/melody' => '*',
@@ -51,37 +51,7 @@ class WorkingDirectoryFactoryTest extends \PHPUnit_Framework_TestCase
                 ),
                 array()
             ),
-            array(
-                array(
-                    'symfony/symfony' => '*',
-                    'sensiolabs/melody' => '*',
-                ),
-                array(
-                    array(
-                        'type' => 'vcs',
-                        'url' => 'https://example.com/symfony',
-                    ),
-                    array(
-                        'type' => 'vcs',
-                        'url' => 'https://example.com/melody',
-                    ),
-                ),
-                array(
-                    'symfony/symfony' => '*',
-                    'sensiolabs/melody' => '*',
-                ),
-                array(
-                    array(
-                        'type' => 'vcs',
-                        'url' => 'https://example.com/melody',
-                    ),
-                    array(
-                        'type' => 'vcs',
-                        'url' => 'https://example.com/symfony',
-                    ),
-                ),
-            ),
-            array(
+            'repositories_order' => array(
                 array(
                     'symfony/symfony' => '*',
                     'sensiolabs/melody' => '*',
@@ -111,10 +81,11 @@ class WorkingDirectoryFactoryTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(
+            'packages_repositories_order' => array(
                 array(
                     'symfony/symfony' => '*',
                     'sensiolabs/melody' => '*',
+                    'pear-pear2.php.net/PEAR2_Text_Markdown' => '*',
                     'smarty/smarty' => '*',
                 ),
                 array(
@@ -142,11 +113,16 @@ class WorkingDirectoryFactoryTest extends \PHPUnit_Framework_TestCase
                             ),
                         )
                     ),
+                    array(
+                        'type' => 'pear',
+                        'url' => 'http://pear2.php.net',
+                    )
                 ),
                 array(
                     'symfony/symfony' => '*',
                     'sensiolabs/melody' => '*',
                     'smarty/smarty' => '*',
+                    'pear-pear2.php.net/PEAR2_Text_Markdown' => '*',
                 ),
                 array(
                     array(
@@ -168,6 +144,10 @@ class WorkingDirectoryFactoryTest extends \PHPUnit_Framework_TestCase
                     array(
                         'url' => 'https://example.com/melody',
                         'type' => 'vcs',
+                    ),
+                    array(
+                        'type' => 'pear',
+                        'url' => 'http://pear2.php.net',
                     ),
                     array(
                         'url' => 'https://example.com/symfony',

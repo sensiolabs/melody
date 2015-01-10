@@ -8,9 +8,12 @@ use org\bovigo\vfs\vfsStream;
 class ComposerTest extends \PHPUnit_Framework_TestCase
 {
     private $composer;
+    private $workingDirPath;
 
     protected function setUp()
     {
+        vfsStream::setup('workingDir');
+        $this->workingDirPath = vfsStream::url('workingDir');
         $this->composer = new Composer();
     }
 
@@ -25,9 +28,9 @@ class ComposerTest extends \PHPUnit_Framework_TestCase
             'symfony/symfony' => '*',
         );
 
-        $process = $this->composer->buildProcess($packages, __DIR__);
+        $process = $this->composer->buildProcess($packages, array(), $this->workingDirPath);
 
-        $this->assertStringEndsWith(" 'require' 'symfony/symfony:*' '--prefer-dist'", $process->getCommandLine());
+        $this->assertStringEndsWith(" 'update' '--prefer-dist'", $process->getCommandLine());
     }
 
     public function testBuildProcessWithPreferSource()
@@ -36,24 +39,31 @@ class ComposerTest extends \PHPUnit_Framework_TestCase
             'symfony/symfony' => '*',
         );
 
-        $process = $this->composer->buildProcess($packages, __DIR__, true);
+        $process = $this->composer->buildProcess($packages,  array(), $this->workingDirPath, true);
 
-        $this->assertStringEndsWith(" 'require' 'symfony/symfony:*' '--prefer-source'", $process->getCommandLine());
+        $this->assertStringEndsWith(" 'update' '--prefer-source'", $process->getCommandLine());
     }
 
-    public function testConfigureRepositoriesWithoutRepositories()
+    public function testBuildProcessWithPackages()
     {
-        $workingDir = vfsStream::setup('workingDir');
-        $repositories = array();
+        $packages = array(
+            'symfony/symfony' => '*',
+        );
 
-        $this->composer->configureRepositories($repositories, vfsStream::url('workingDir'));
+        $this->composer->buildProcess($packages, array(), $this->workingDirPath);
 
-        $this->assertFalse($workingDir->hasChild('composer.json'));
+        $this->assertComposerJsonFileEquals(array('require' => $packages));
     }
 
-    public function testConfigureRepositoriesWithRepositories()
+    public function testBuildProcessWithRepositories()
     {
-        vfsStream::setup('workingDir');
+        $packages = array(
+            'pimple/pimple' => '*',
+            'sensiolabs/melody' => '*',
+            'example/projectA' => '*',
+            'foobar/TopLevelPackage1' => '*',
+            'smarty/smarty' => "3.1.*",
+        );
         $repositories = array(
             array(
                 'type' => 'vcs',
@@ -97,11 +107,19 @@ class ComposerTest extends \PHPUnit_Framework_TestCase
             ),
         );
 
-        $this->composer->configureRepositories($repositories, vfsStream::url('workingDir'));
+        $this->composer->buildProcess($packages, $repositories, $this->workingDirPath, true);
+        $this->assertComposerJsonFileEquals(
+            array(
+                'require' => $packages,
+                'repositories' => $repositories
+            )
+        );
+    }
 
-        $composerJsonContent = file_get_contents(vfsStream::url('workingDir/composer.json'));
+    private function assertComposerJsonFileEquals($expected)
+    {
+        $composerJsonContent = file_get_contents($this->workingDirPath . '/composer.json');
         $composerJsonContentDecode = json_decode($composerJsonContent, true);
-        $this->assertArrayHasKey('repositories', $composerJsonContentDecode);
-        $this->assertEquals($repositories, $composerJsonContentDecode['repositories']);
+        $this->assertEquals($expected, $composerJsonContentDecode);
     }
 }

@@ -122,7 +122,6 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     {
         $output = $this->melodyRun('fork-repositories.php', array('prefer_source' => true));
 
-        $this->assertContains('./composer.json has been updated', $output);
         $this->assertContains('Loading composer repositories with package information', $output);
         $this->assertContains('Updating dependencies (including require-dev)', $output);
         $this->assertContains('Installing pimple/pimple (v1.0.2)', $output);

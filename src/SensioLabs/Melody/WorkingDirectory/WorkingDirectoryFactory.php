@@ -79,13 +79,12 @@ class WorkingDirectoryFactory
     {
         $urls = array();
         $recursiveIteratorRepositories = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($repositories));
-        $urlIterator = new \CallbackFilterIterator($recursiveIteratorRepositories, function ($current, $key, $iterator) {
-            return 'url' === $key;
-        });
 
-        foreach ($urlIterator as $url) {
-            $repositoryPosition = $urlIterator->getSubIterator(0)->key();
-            $urls[$repositoryPosition][] = $url;
+        foreach ($recursiveIteratorRepositories as $key => $leaf) {
+            if ('url' === $key) {
+                $repositoryPosition = $recursiveIteratorRepositories->getSubIterator(0)->key();
+                $urls[$repositoryPosition][] = $leaf;
+            }
         }
 
         return $urls;

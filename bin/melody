@@ -1,12 +1,18 @@
 #!/usr/bin/env php
 <?php
 
-if (!file_exists(__DIR__.'/../vendor/autoload.php')) {
-    echo "Melody's dependencies not installed.\n";
+if (file_exists($autoloader_path = __DIR__.'/../../../autoload.php')) {
+    require_once $autoloader_path;
+} else if (file_exists($autoloader_path = __DIR__.'/../vendor/autoload.php')) {
+    require_once $autoloader_path;
+} else {
+    echo 'You did not install the composer dependency.' . PHP_EOL .
+         'Run composer install or go on ' . PHP_EOL .
+         'http://melody.sensiolabs.org/#btn_installation' . PHP_EOL .
+         'for more information on how to install melody.' . PHP_EOL
+    ;
     exit(1);
 }
-
-require_once __DIR__.'/../vendor/autoload.php';
 
 use SensioLabs\Melody\Console\Application;
 

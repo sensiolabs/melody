@@ -36,6 +36,9 @@ class WorkingDirectoryFactory
     {
         ksort($packages);
 
-        return hash('sha256', serialize($packages));
+        // Some application use `basename(__DIR__)` and may generate class
+        // name with this dirname. And a sha256 hash may start with a number.
+        // This will lead to a fatal error because PHP forbid that.
+        return 'a'.hash('sha256', serialize($packages));
     }
 }

@@ -29,11 +29,12 @@ class Composer
 
     public function buildProcess(array $packages, array $repositories, $dir, $preferSource = false)
     {
-        $this->configureRepositories($packages, $repositories, $dir);
+        $this->generateJsonFile($packages, $repositories, $dir);
+
         return $this->updateProcess($dir, $preferSource);
     }
 
-    private function configureRepositories(array $packages, array $repositories, $dir)
+    private function generateJsonFile(array $packages, array $repositories, $dir)
     {
         $config = array(
             'require' => $packages,
@@ -68,7 +69,6 @@ class Composer
 
         return $process;
     }
-
 
     public function getVendorDir()
     {

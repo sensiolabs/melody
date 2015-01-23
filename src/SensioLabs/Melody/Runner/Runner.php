@@ -46,7 +46,7 @@ class Runner
             $script->getArguments()
         ))->getProcess();
 
-        if (!defined('PHP_WINDOWS_VERSION_BUILD')) {
+        if (!defined('PHP_WINDOWS_VERSION_BUILD') && php_sapi_name() === 'cli') {
             $process->setTty(true);
         }
 

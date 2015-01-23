@@ -69,7 +69,7 @@ class Melody
 
         $process = $this->runner->getProcess($script, $workingDirectory->getPath());
 
-        $cliExecutor($process, false);
+        return $cliExecutor($process, false);
     }
 
     private function createResource($resourceName)

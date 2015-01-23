@@ -74,7 +74,8 @@ EOT
                     }
                     $output->write($text);
                 };
-                $process->run($callback);
+
+                return $process->run($callback);
             }
         };
 
@@ -83,6 +84,6 @@ EOT
         $script = $input->getArgument('script');
         $arguments = $input->getArgument('arguments');
 
-        $melody->run($script, $arguments, $configuration, $cliExecutor);
+        return $melody->run($script, $arguments, $configuration, $cliExecutor);
     }
 }

@@ -47,6 +47,9 @@ class Composer
         $process = ProcessBuilder::create($args)
             ->setWorkingDirectory($dir)
             ->setTimeout(240)
+            // forward the PATH variable from the user running the webserver, to the subprocess
+            // so it can find binaries like e.g. composer
+            ->setEnv('PATH', $_SERVER['PATH'])
             ->getProcess()
         ;
 

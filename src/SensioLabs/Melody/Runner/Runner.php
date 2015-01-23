@@ -44,7 +44,12 @@ class Runner
             $phpFinder->findArguments(),
             array($file),
             $script->getArguments()
-        ))->getProcess();
+        ))
+            // forward the PATH variable from the user running the webserver, to the subprocess
+            // so it can find binaries like e.g. composer
+            ->setEnv('PATH', $_SERVER['PATH'])
+            ->getProcess()
+        ;
 
         if (!defined('PHP_WINDOWS_VERSION_BUILD')) {
             $process->setTty(true);

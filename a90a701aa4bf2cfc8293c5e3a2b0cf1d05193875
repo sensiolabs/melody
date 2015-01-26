@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by staabm at 2015-01-23T16:12:00Z
+
+@jeremy-derusse adjusted per feedback
+
+---------------------------------------------------------------------------
+
+by staabm at 2015-01-23T16:26:57Z
+
+relates to https://github.com/symfony/symfony/issues/13261
+
+---------------------------------------------------------------------------
+
+by staabm at 2015-01-23T16:34:01Z
+
+fyi: this is the last open Pr which needs to land, to finish my melody php-console integration.
+
+;)

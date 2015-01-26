@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by lyrixx at 2015-01-23T16:29:26Z
+
+Travis failed because of GH API rate limit.
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2015-01-23T16:29:50Z
+
+IIRC, there is a hack somewhere in travis to use your own gh token.

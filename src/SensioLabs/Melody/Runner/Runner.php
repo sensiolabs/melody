@@ -96,7 +96,7 @@ require __DIR__.'/{{ vendorDir }}/autoload.php';
 
 // Error handling part
 error_reporting(-1);
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 set_error_handler(function ($level, $message, $file = 'unknown', $line = 0, $context = array()) {
     $message = sprintf('%s: %s in %s line %d', $level, $message, $file, $line);
 

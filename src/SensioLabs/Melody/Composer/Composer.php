@@ -96,7 +96,7 @@ class Composer
         $executableFinder = new ExecutableFinder();
         foreach ($candidateNames as $candidateName) {
             if ($composerPath = $executableFinder->find($candidateName, null, array(getcwd()))) {
-                return array($composerPath);
+                return array(realpath($composerPath));
             }
         }
 

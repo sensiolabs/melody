@@ -49,6 +49,7 @@ class Gist
     public function download()
     {
         $handle = curl_init();
+        $http_proxy = filter_input(INPUT_ENV, 'HTTPS_PROXY', FILTER_SANITIZE_URL);
 
         curl_setopt_array($handle, array(
             CURLOPT_URL            => sprintf('https://api.github.com/gists/%s', $this->id),
@@ -58,6 +59,10 @@ class Gist
             ),
             CURLOPT_RETURNTRANSFER => 1,
         ));
+
+        if ($http_proxy) {
+            curl_setopt($handle, CURLOPT_PROXY, $http_proxy);
+        }
 
         $content = curl_exec($handle);
         curl_close($handle);

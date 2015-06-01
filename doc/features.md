@@ -21,6 +21,9 @@ Supported formats:
 Please note that `melody` can only handle gists which contain a single PHP
 file. It will report an error otherwise.
 
+For those users behind a proxy server, `melody` now uses the `HTTPS_PROXY`
+environment variable.
+
 Run streamed script
 -------------------
 

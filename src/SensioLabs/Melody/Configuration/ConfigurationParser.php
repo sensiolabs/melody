@@ -12,7 +12,7 @@ use SensioLabs\Melody\Exception\ParseException;
 class ConfigurationParser
 {
     const PACKAGE_DELIMITER = ':';
-    const PACKAGE_REGEX = '/^((|[a-zA-Z0-9]([_.-]?[a-zA-Z0-9]+)*\\/[a-zA-Z0-9]([_.-]?[a-zA-Z0-9]+)*)|php|ext-[a-zA-Z0-9_.-]*)$/';
+    const PACKAGE_REGEX = '/^((|[a-zA-Z0-9]([_.-]?[a-zA-Z0-9]+)*\\/[a-zA-Z0-9]([_.-]?[a-zA-Z0-9]+)*)|php|ext-[a-zA-Z0-9_.-]+)$/';
 
     public function parseConfiguration($config)
     {

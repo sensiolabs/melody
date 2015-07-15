@@ -50,7 +50,6 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     public function testRunWithConstraints()
     {
-        $this->melodyRun('hello-world-with-constraints.php');
         $output = $this->melodyRun('hello-world-with-constraints.php');
         $this->assertSame('Hello world', $output);
     }

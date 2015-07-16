@@ -48,6 +48,8 @@ class ConfigurationParserTest extends \PHPUnit_Framework_TestCase
             'symfony/console: 1.2',
             'symfony/filesystem',
             'symfony/filesystem: 1.3',
+            'php: 5.5.0',
+            'ext-pdo: *',
         )));
 
         $this->assertInstanceOf('SensioLabs\Melody\Configuration\ScriptConfiguration', $config);
@@ -55,6 +57,8 @@ class ConfigurationParserTest extends \PHPUnit_Framework_TestCase
             'symfony/finder' => '*',
             'symfony/console' => '1.2',
             'symfony/filesystem' => '1.3',
+            'php' => '5.5.0',
+            'ext-pdo' => '*',
         );
         $this->assertSame($expected, $config->getPackages());
     }

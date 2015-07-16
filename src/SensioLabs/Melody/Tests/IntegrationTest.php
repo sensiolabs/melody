@@ -152,7 +152,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     private function cleanCache()
     {
-        $this->fs->remove(sys_get_temp_dir() . '/melody');
+        $this->fs->remove(sys_get_temp_dir().'/melody');
     }
 
     private function getFixtureFile($fixtureName)

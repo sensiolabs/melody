@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by ArthurHlt at 2015-07-13T22:53:22Z
+
+Sorry when adding test I didn't see that my IDE move methods in `src/SensioLabs/Melody/Tests/IntegrationTest.php`. Just the method `testRunWithConstraints` was added.
+
+---------------------------------------------------------------------------
+
+by staabm at 2015-07-14T05:42:11Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by ArthurHlt at 2015-07-14T10:30:45Z
+
+You're right, change made.
+
+---------------------------------------------------------------------------
+
+by ArthurHlt at 2015-07-15T11:08:55Z
+
+I've removed the second `melodyRun` from `testWithConstraint`

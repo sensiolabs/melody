@@ -63,6 +63,11 @@ class Melody
             $process = $this->composer->buildProcess($script->getPackages(), $workingDirectory->getPath(), $configuration->preferSource());
 
             $cliExecutor($process, true);
+            
+            // errors were already sent by the cliExecutor, just stop further processing
+            if ($process->getExitCode() !== 0) {
+                return;
+            }
 
             $workingDirectory->lock();
         }

@@ -3,7 +3,7 @@
 namespace SensioLabs\Melody\Resource;
 
 /**
- * LocalResource
+ * LocalResource.
  *
  * @author Jérémy Derussé <jeremy@derusse.com>
  */

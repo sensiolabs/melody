@@ -1,4 +1,5 @@
 <?php
+
 <<<CONFIG
 packages:
     - "twig/twig:1.16.0"

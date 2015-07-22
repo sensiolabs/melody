@@ -6,7 +6,7 @@ use SensioLabs\Melody\Configuration\ScriptConfiguration;
 use SensioLabs\Melody\Resource\Resource;
 
 /**
- * Script
+ * Script.
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */

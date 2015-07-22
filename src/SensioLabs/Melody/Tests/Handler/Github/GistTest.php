@@ -12,7 +12,7 @@ class GistTest extends \PHPUnit_Framework_TestCase
             array(''),
             array('http://foo'),
             array('https://foo/bar'),
-            array('http://gist.foo.bar/bar/123')
+            array('http://gist.foo.bar/bar/123'),
         );
     }
 

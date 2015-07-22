@@ -143,7 +143,7 @@ class ConfigurationParserTest extends \PHPUnit_Framework_TestCase
                         'autoload' => array(
                             'classmap' => array('libs/'),
                         ),
-                    )
+                    ),
                 ),
             ),
         ));
@@ -188,7 +188,7 @@ class ConfigurationParserTest extends \PHPUnit_Framework_TestCase
                     'autoload' => array(
                         'classmap' => array('libs/'),
                     ),
-                )
+                ),
             ),
         );
         $this->assertSame($expected, $config->getRepositories());

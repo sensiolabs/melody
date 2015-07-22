@@ -21,9 +21,9 @@ class FileHandlerTest extends \PHPUnit_Framework_TestCase
     public function provideSupports()
     {
         return array(
-            array(__DIR__ . '/../Integration/hello-world.php', true),
-            array(__DIR__ . '/../Integration/Path/To/InvalidFile.php', false),
-            array(__DIR__ . '/../Integration', false),
+            array(__DIR__.'/../Integration/hello-world.php', true),
+            array(__DIR__.'/../Integration/Path/To/InvalidFile.php', false),
+            array(__DIR__.'/../Integration', false),
             array('https://gist.github.com/csarrazi/7494d27255d0561157b8', false),
         );
     }
@@ -38,7 +38,7 @@ class FileHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateResource()
     {
-        $filename = __DIR__ . '/../Integration/hello-world.php';
+        $filename = __DIR__.'/../Integration/hello-world.php';
 
         $resource = $this->handler->createResource($filename);
 

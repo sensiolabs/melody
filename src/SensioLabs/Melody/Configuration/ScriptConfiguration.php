@@ -3,7 +3,7 @@
 namespace SensioLabs\Melody\Configuration;
 
 /**
- * ScriptConfiguration
+ * ScriptConfiguration.
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */

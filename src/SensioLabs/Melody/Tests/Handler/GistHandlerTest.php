@@ -7,7 +7,7 @@ use SensioLabs\Melody\Handler\GistHandler;
 class GistHandlerTest extends \PHPUnit_Framework_TestCase
 {
     const SINGLE_URL = 'https://gist.github.com/csarrazi/7494d27255d0561157b8';
-    const MULTI_URL  = 'https://gist.github.com/alexandresalome/e1dcf99dedadd4838a99';
+    const MULTI_URL = 'https://gist.github.com/alexandresalome/e1dcf99dedadd4838a99';
 
     private $handler;
 
@@ -24,9 +24,9 @@ class GistHandlerTest extends \PHPUnit_Framework_TestCase
     public function provideSupports()
     {
         return array(
-            array(__DIR__ . '/../fixtures/foo.php', false),
-            array(__DIR__ . '/../fixtures/foobar.php', false),
-            array(__DIR__ . '/../fixtures', false),
+            array(__DIR__.'/../fixtures/foo.php', false),
+            array(__DIR__.'/../fixtures/foobar.php', false),
+            array(__DIR__.'/../fixtures', false),
             array('https://gist.github.com/foobar/7494d27255d0561157b8', true),
             array('https://gist.github.com/foobar/7494d27255d0561157b8', true),
             array('https://gist.github.com/foobar-/7494d27255d0561157b8', true),

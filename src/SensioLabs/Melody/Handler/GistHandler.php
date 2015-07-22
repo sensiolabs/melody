@@ -6,7 +6,7 @@ use SensioLabs\Melody\Handler\Github\Gist;
 use SensioLabs\Melody\Resource\Resource;
 
 /**
- * Class GistHandler
+ * Class GistHandler.
  *
  * @author Charles Sarrazin <charles@sarraz.in>
  * @author Grégoire Pineau <lyrixx@lyrixx.info>

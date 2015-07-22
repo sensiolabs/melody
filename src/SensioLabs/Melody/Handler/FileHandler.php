@@ -5,7 +5,7 @@ namespace SensioLabs\Melody\Handler;
 use SensioLabs\Melody\Resource\LocalResource;
 
 /**
- * Class FileHandler
+ * Class FileHandler.
  *
  * @author Charles Sarrazin <charles@sarraz.in>
  * @author Grégoire Pineau <lyrixx@lyrixx.info>

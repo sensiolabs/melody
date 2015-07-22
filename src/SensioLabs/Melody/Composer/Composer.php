@@ -7,7 +7,7 @@ use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * Composer
+ * Composer.
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Jérémy Derussé <jeremy@derusse.com>
@@ -42,7 +42,7 @@ class Composer
         if (!empty($repositories)) {
             $config['repositories'] = $repositories;
         }
-        file_put_contents($dir . '/composer.json', json_encode($config));
+        file_put_contents($dir.'/composer.json', json_encode($config));
     }
 
     private function updateProcess($dir, $preferSource = false)
@@ -118,16 +118,17 @@ class Composer
             $composerPath = sprintf('%s/%s', getcwd(), $candidateName);
             if (file_exists($composerPath)) {
                 $phpFinder = new PhpExecutableFinder();
+
                 return array_merge(
                     array(
                         $phpFinder->find(false),
-                        $composerPath
+                        $composerPath,
                     ),
                     $phpFinder->findArguments()
                 );
             }
         }
 
-        return null;
+        return;
     }
 }

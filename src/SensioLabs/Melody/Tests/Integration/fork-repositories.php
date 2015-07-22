@@ -1,4 +1,5 @@
 <?php
+
 <<<CONFIG
 repositories:
     - type: vcs

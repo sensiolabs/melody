@@ -1,4 +1,5 @@
 <?php
+
 <<<CONFIG
 packages:
     - "pimple/pimple: 1.0.2"

@@ -9,7 +9,7 @@ use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * Runner
+ * Runner.
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */
@@ -83,7 +83,7 @@ TEMPLATE;
 
         return strtr($template, array(
             '{{ head }}' => $this->getHead(),
-            '{{ code }}' => $resource->getContent()
+            '{{ code }}' => $resource->getContent(),
         ));
     }
 

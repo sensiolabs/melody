@@ -62,7 +62,7 @@ class ComposerTest extends \PHPUnit_Framework_TestCase
             'sensiolabs/melody' => '*',
             'example/projectA' => '*',
             'foobar/TopLevelPackage1' => '*',
-            'smarty/smarty' => "3.1.*",
+            'smarty/smarty' => '3.1.*',
         );
         $repositories = array(
             array(
@@ -103,7 +103,7 @@ class ComposerTest extends \PHPUnit_Framework_TestCase
                     'autoload' => array(
                         'classmap' => array('libs/'),
                     ),
-                )
+                ),
             ),
         );
 
@@ -111,14 +111,14 @@ class ComposerTest extends \PHPUnit_Framework_TestCase
         $this->assertComposerJsonFileEquals(
             array(
                 'require' => $packages,
-                'repositories' => $repositories
+                'repositories' => $repositories,
             )
         );
     }
 
     private function assertComposerJsonFileEquals($expected)
     {
-        $composerJsonContent = file_get_contents($this->workingDirPath . '/composer.json');
+        $composerJsonContent = file_get_contents($this->workingDirPath.'/composer.json');
         $composerJsonContentDecode = json_decode($composerJsonContent, true);
         $this->assertEquals($expected, $composerJsonContentDecode);
     }

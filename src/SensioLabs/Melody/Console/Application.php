@@ -9,7 +9,7 @@ use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Helper\ProcessHelper;
 
 /**
- * Application
+ * Application.
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  * @author Grégoire Pineau <lyrixx@lyrixx.info>

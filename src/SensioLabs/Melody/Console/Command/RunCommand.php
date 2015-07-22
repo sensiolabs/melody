@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
 /**
- * RunCommand
+ * RunCommand.
  *
  * @author Jérémy Derussé <jeremy@derusse.com>
  * @author Grégoire Pineau <lyrixx@lyrixx.info>

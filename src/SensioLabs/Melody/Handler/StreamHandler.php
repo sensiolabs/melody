@@ -5,7 +5,7 @@ namespace SensioLabs\Melody\Handler;
 use SensioLabs\Melody\Resource\Resource;
 
 /**
- * Class StreamHandler
+ * Class StreamHandler.
  *
  * @author Jérémy Derussé <jeremy@derusse.com>
  */

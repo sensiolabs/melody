@@ -5,7 +5,7 @@ namespace SensioLabs\Melody\Configuration;
 use SensioLabs\Melody\Exception\ParseException;
 
 /**
- * ConfigurationParser
+ * ConfigurationParser.
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */
@@ -124,5 +124,4 @@ class ConfigurationParser
 
         return $config['repositories'];
     }
-
 }

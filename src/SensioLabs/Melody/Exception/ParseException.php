@@ -3,7 +3,7 @@
 namespace SensioLabs\Melody\Exception;
 
 /**
- * ParseException
+ * ParseException.
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */

@@ -3,7 +3,7 @@
 namespace SensioLabs\Melody\Configuration;
 
 /**
- * RunConfiguration
+ * RunConfiguration.
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */

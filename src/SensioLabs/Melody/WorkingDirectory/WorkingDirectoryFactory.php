@@ -5,7 +5,7 @@ namespace SensioLabs\Melody\WorkingDirectory;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * WorkingDirectoryFactory
+ * WorkingDirectoryFactory.
  *
  * @author Jérémy Derussé <jeremy@derusse.com>
  * @author Grégoire Pineau <lyrixx@lyrixx.info>

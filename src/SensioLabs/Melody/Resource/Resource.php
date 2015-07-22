@@ -3,7 +3,7 @@
 namespace SensioLabs\Melody\Resource;
 
 /**
- * Resource
+ * Resource.
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Jérémy Derussé <jeremy@derusse.com>

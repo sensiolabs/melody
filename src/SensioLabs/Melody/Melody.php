@@ -68,7 +68,7 @@ class Melody
             );
 
             $cliExecutor($process, true);
-            
+
             // errors were already sent by the cliExecutor, just stop further processing
             if ($process->getExitCode() !== 0) {
                 return;

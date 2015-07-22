@@ -7,7 +7,7 @@ use SensioLabs\Melody\Resource\Resource;
 use SensioLabs\Melody\Resource\ResourceParser;
 
 /**
- * ScriptBuilder
+ * ScriptBuilder.
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */

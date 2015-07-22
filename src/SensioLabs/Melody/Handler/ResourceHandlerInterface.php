@@ -5,7 +5,7 @@ namespace SensioLabs\Melody\Handler;
 use SensioLabs\Melody\Resource\Resource;
 
 /**
- * Interface ResourceHandlerInterface
+ * Interface ResourceHandlerInterface.
  *
  * @author Charles Sarrazin <charles@sarraz.in>
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
@@ -22,9 +22,10 @@ interface ResourceHandlerInterface
     public function supports($filename);
 
     /**
-     * Creates a new resources, based on a filename
+     * Creates a new resources, based on a filename.
      *
-     * @param  string   $filename
+     * @param string $filename
+     *
      * @return Resource
      */
     public function createResource($filename);

@@ -52,6 +52,7 @@ EOT
         } else {
             $output->writeln(sprintf('<error>The file %s could not be written.</error>', $localFilename));
             $output->writeln('<error>Please run the self-update command with higher privileges.</error>');
+
             return 1;
         }
 
@@ -59,6 +60,7 @@ EOT
         if (!is_writable($tempDirectory)) {
             $output->writeln(sprintf('<error>The temporary directory %s could not be written.</error>', $tempDirectory));
             $output->writeln('<error>Please run the self-update command with higher privileges.</error>');
+
             return 1;
         }
 
@@ -67,6 +69,7 @@ EOT
         @copy($remoteFilename, $tempFilename);
         if (!file_exists($tempFilename)) {
             $output->writeln('<error>Unable to download new versions from the server.</error>');
+
             return 1;
         }
 

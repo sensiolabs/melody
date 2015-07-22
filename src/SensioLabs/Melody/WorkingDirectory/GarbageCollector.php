@@ -8,7 +8,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * GarbageCollector
+ * GarbageCollector.
  *
  * @author Jérémy Derussé <jeremy@derusse.com>
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
@@ -28,7 +28,7 @@ class GarbageCollector
     }
 
     /**
-     * Remove old workingDirectories
+     * Remove old workingDirectories.
      */
     public function run()
     {

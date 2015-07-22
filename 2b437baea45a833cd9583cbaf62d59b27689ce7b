@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by lyrixx at 2015-07-22T15:36:04Z
+
+PR is green, not the push :o
+
+---------------------------------------------------------------------------
+
+by jderusse at 2015-07-22T16:34:39Z
+
+Nice work,
+
+Would be great to add a Travis job who asserts that nexts PR will not break the CS.
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2015-07-22T16:39:29Z
+
+> Would be great to add a Travis job who asserts that nexts PR will not break the CS.
+
+I did better: I just added fabbot.io (because I can ;))

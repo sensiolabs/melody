@@ -22,8 +22,9 @@ class ConfigurationParser
 
         $packages = $this->parsePackages($config);
         $phpOptions = $this->parsePhpOptions($config);
+        $repositories = $this->parseRepositories($config);
 
-        return new ScriptConfiguration($packages, $phpOptions);
+        return new ScriptConfiguration($packages, $phpOptions, $repositories);
     }
 
     private function parsePackages($config)
@@ -110,4 +111,18 @@ class ConfigurationParser
 
         return $phpOptions;
     }
+
+    private function parseRepositories($config)
+    {
+        if (!array_key_exists('repositories', $config)) {
+            return array();
+        }
+
+        if (!is_array($config['repositories'])) {
+            throw new ParseException('The repositories configuration should be an array.');
+        }
+
+        return $config['repositories'];
+    }
+
 }

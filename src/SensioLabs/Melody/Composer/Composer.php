@@ -27,16 +27,30 @@ class Composer
         $this->composerCommand = $composerCommand;
     }
 
-    public function buildProcess(array $packages, $dir, $preferSource = false)
+    public function buildProcess(array $packages, array $repositories, $dir, $preferSource = false)
+    {
+        $this->generateJsonFile($packages, $repositories, $dir);
+
+        return $this->updateProcess($dir, $preferSource);
+    }
+
+    private function generateJsonFile(array $packages, array $repositories, $dir)
+    {
+        $config = array(
+            'require' => $packages,
+        );
+        if (!empty($repositories)) {
+            $config['repositories'] = $repositories;
+        }
+        file_put_contents($dir . '/composer.json', json_encode($config));
+    }
+
+    private function updateProcess($dir, $preferSource = false)
     {
         $args = array_merge(
             $this->composerCommand,
-            array('require')
+            array('update')
         );
-
-        foreach ($packages as $package => $version) {
-            $args[] = sprintf('%s:%s', $package, $version);
-        }
 
         if ($preferSource) {
             $args[] = '--prefer-source';

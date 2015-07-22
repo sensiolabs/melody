@@ -42,4 +42,9 @@ class Script
     {
         return $this->configuration->getPackages();
     }
+
+    public function getRepositories()
+    {
+        return $this->configuration->getRepositories();
+    }
 }

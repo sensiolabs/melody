@@ -124,6 +124,17 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('memory_limit=42M', $output);
     }
 
+    public function testRunWithForkRepositories()
+    {
+        $output = $this->melodyRun('fork-repositories.php', array('prefer_source' => true));
+
+        $this->assertContains('Loading composer repositories with package information', $output);
+        $this->assertContains('Updating dependencies (including require-dev)', $output);
+        $this->assertContains('Installing pimple/pimple (v1.0.2)', $output);
+        $this->assertContains('Cloning', $output);
+        $this->assertContains('value', $output);
+    }
+
     private function melodyRun($fixture, array $options = array())
     {
         $melody = new Melody();

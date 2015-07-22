@@ -129,7 +129,7 @@ User Configuration
 Melody stores your configuration in a file located in `~/.sensiolabs/melody.yml`.
 This file contains:
 
-* a list of trusted resources signatures (see setion Trust).
+* a list of trusted resources signatures (see section Trust).
 * a list of trusted users.
 
 This file is stored with a YAML syntax. You can manually edit it to complete

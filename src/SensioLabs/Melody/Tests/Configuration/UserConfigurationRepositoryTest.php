@@ -42,8 +42,22 @@ class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadWithoutWrongData()
     {
-        $repositpory = new UserConfigurationRepository(__DIR__.'/../Fixtures/config-invalid.yml');
-        $repositpory->load();
+        $filename = sprintf('%s/%s', sys_get_temp_dir(), uniqid());
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
+
+        file_put_contents($filename, 'foo: *bar');
+
+        try {
+            $repositpory = new UserConfigurationRepository($filename);
+            $repositpory->load();
+            unlink($filename);
+        } catch(\Exception $e) {
+            unlink($filename);
+            throw $e;
+        }
+
     }
 
     public function testSave()

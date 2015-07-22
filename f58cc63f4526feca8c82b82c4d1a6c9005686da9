@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by staabm at 2015-01-05T15:45:40Z
+
+`run` did not send an indicator to the caller whether the underlying processes worked correctly or not. maybe we should return a boolean in `Melody->run` ...?
+
+---------------------------------------------------------------------------
+
+by jderusse at 2015-01-05T16:08:17Z
+
+Shouldn't `$cliExecutor` throws an exception when the called process failed ?
+
+---------------------------------------------------------------------------
+
+by staabm at 2015-01-05T16:17:54Z
+
+hmm you are right. Nevertheless I get sometimes into a state where the `WorkingDirectory` only contains a `bootstrap.php` file which then when executed produces a syntax-error, because of missing `vendor/autoload.php`...
+
+---------------------------------------------------------------------------
+
+by jderusse at 2015-01-05T22:30:03Z
+
+Can you give steps to reproduce the bug?
+
+---------------------------------------------------------------------------
+
+by staabm at 2015-01-05T22:32:02Z
+
+Will be offline for a week and report back next week.
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2015-01-06T09:48:38Z
+
+@jeremy-derusse I guess you can "blacklist" packagist by modifying your /etc/hosts to force an error in melody.

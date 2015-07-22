@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by jderusse at 2014-12-30T19:11:36Z
+
+I think we should also add the list of repositories the calculation of the uniqueness of the config (see https://github.com/sensiolabs/melody/blob/master/src/SensioLabs/Melody/WorkingDirectory/WorkingDirectoryFactory.php#L28))
+
+---------------------------------------------------------------------------
+
+by jderusse at 2014-12-30T19:11:56Z
+
+Can you, please, add documentation?
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-30T20:45:29Z
+
+@jeremy-derusse I'm on holidays right now, let's talk about this one next year;) except if everything is OK for you ;)
+
+---------------------------------------------------------------------------
+
+by jderusse at 2015-01-15T10:48:11Z
+
+With this PR, we generate a full composer.json wich is validated by composer. It will be easy to fix https://github.com/sensiolabs/melody/issues/4  by simply removing `validatePackage` and let composer do the job.
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2015-07-22T15:35:07Z
+
+@jderusse This PR seems good to me, and you?
+
+---------------------------------------------------------------------------
+
+by jderusse at 2015-07-22T16:28:15Z
+
+:+1:

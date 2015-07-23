@@ -4,9 +4,13 @@ namespace SensioLabs\Melody;
 
 use SensioLabs\Melody\Composer\Composer;
 use SensioLabs\Melody\Configuration\RunConfiguration;
+use SensioLabs\Melody\Configuration\UserConfiguration;
+use SensioLabs\Melody\Exception\TrustException;
 use SensioLabs\Melody\Handler\FileHandler;
 use SensioLabs\Melody\Handler\GistHandler;
 use SensioLabs\Melody\Handler\StreamHandler;
+use SensioLabs\Melody\Resource\LocalResource;
+use SensioLabs\Melody\Resource\Resource;
 use SensioLabs\Melody\Runner\Runner;
 use SensioLabs\Melody\Script\ScriptBuilder;
 use SensioLabs\Melody\WorkingDirectory\GarbageCollector;
@@ -43,17 +47,18 @@ class Melody
         $this->runner = new Runner($this->composer->getVendorDir());
     }
 
-    public function run($resourceName, array $arguments, RunConfiguration $configuration, $cliExecutor)
+    public function run($resourceName, array $arguments, RunConfiguration $runConfiguration, UserConfiguration $userConfiguration, $cliExecutor)
     {
         $this->garbageCollector->run();
 
         $resource = $this->createResource($resourceName);
+        $this->assertTrustedResource($resource, $runConfiguration, $userConfiguration);
 
         $script = $this->scriptBuilder->buildScript($resource, $arguments);
 
         $workingDirectory = $this->wdFactory->createTmpDir($script->getPackages(), $script->getRepositories());
 
-        if ($configuration->noCache()) {
+        if ($runConfiguration->noCache()) {
             $workingDirectory->clear();
         }
 
@@ -64,7 +69,7 @@ class Melody
                 $script->getPackages(),
                 $script->getRepositories(),
                 $workingDirectory->getPath(),
-                $configuration->preferSource()
+                $runConfiguration->preferSource()
             );
 
             $cliExecutor($process, true);
@@ -82,6 +87,11 @@ class Melody
         return $cliExecutor($process, false);
     }
 
+    /**
+     * @param string $resourceName path to the resource
+     *
+     * @return Resource
+     */
     private function createResource($resourceName)
     {
         foreach ($this->handlers as $handler) {
@@ -93,5 +103,18 @@ class Melody
         }
 
         throw new \LogicException(sprintf('No handler found for resource "%s".', $resourceName));
+    }
+
+    private function assertTrustedResource(Resource $resource, RunConfiguration $runConfiguration, UserConfiguration $userConfiguration)
+    {
+        if ($resource instanceof LocalResource
+            || $runConfiguration->isTrusted()
+            || in_array($resource->getMetadata()->getOwner(), $userConfiguration->getTrustedUsers())
+            || in_array($resource->getSignature(), $userConfiguration->getTrustedSignatures())
+        ) {
+            return;
+        }
+
+        throw new TrustException($resource);
     }
 }

@@ -2,15 +2,15 @@
 
 namespace SensioLabs\Melody\Tests\Configuration;
 
-use SensioLabs\Melody\Configuration\ConfigurationParser;
+use SensioLabs\Melody\Configuration\RunConfigurationParser;
 
-class ConfigurationParserTest extends \PHPUnit_Framework_TestCase
+class RunConfigurationParserTest extends \PHPUnit_Framework_TestCase
 {
     private $parser;
 
     public function setUp()
     {
-        $this->parser = new ConfigurationParser();
+        $this->parser = new RunConfigurationParser();
     }
 
     public function tearDown()

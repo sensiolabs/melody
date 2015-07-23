@@ -4,12 +4,14 @@ namespace SensioLabs\Melody\Handler;
 
 use SensioLabs\Melody\Handler\Github\Gist;
 use SensioLabs\Melody\Resource\Resource;
+use SensioLabs\Melody\Resource\Metadata;
 
 /**
  * Class GistHandler.
  *
  * @author Charles Sarrazin <charles@sarraz.in>
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
+ * @author Jérémy Derussé <jeremy@derusse.com>
  */
 class GistHandler implements ResourceHandlerInterface
 {
@@ -42,7 +44,15 @@ class GistHandler implements ResourceHandlerInterface
 
         // Fetch the only element in the array
         $file = current($files);
+        $metadata = new Metadata(
+            $data['id'],
+            $data['owner']['login'],
+            new \DateTime($data['created_at']),
+            new \DateTime($data['updated_at']),
+            count($data['history']),
+            $data['html_url']
+        );
 
-        return new Resource($file['content']);
+        return new Resource($file['content'], $metadata);
     }
 }

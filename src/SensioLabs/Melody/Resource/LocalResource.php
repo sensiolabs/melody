@@ -11,9 +11,9 @@ class LocalResource extends Resource
 {
     private $filename;
 
-    public function __construct($filename, $content)
+    public function __construct($filename, $content, Metadata $metadata)
     {
-        parent::__construct($content);
+        parent::__construct($content, $metadata);
         $this->filename = $filename;
     }
 

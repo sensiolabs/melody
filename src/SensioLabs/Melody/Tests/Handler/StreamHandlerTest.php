@@ -21,8 +21,8 @@ class StreamHandlerTest extends \PHPUnit_Framework_TestCase
     public function provideSupports()
     {
         return array(
-            array(__DIR__.'/../Integration/hello-world.php', true),
-            array(__DIR__.'/../Integration/Path/To/InvalidFile.php', false),
+            array(__DIR__.'/../Fixtures/hello-world.php', true),
+            array(__DIR__.'/../Fixtures/Path/To/InvalidFile.php', false),
             array('php://stdin', true),
             array('https://gist.githubusercontent.com/lyrixx/565752f13499a3fa17d9/raw/f561159b09a2014dd0d75727582c2cf8ee36e30e/melody.php', true),
         );
@@ -38,7 +38,7 @@ class StreamHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateResource()
     {
-        $filename = __DIR__.'/../Integration/hello-world.php';
+        $filename = __DIR__.'/../Fixtures/hello-world.php';
 
         $resource = $this->handler->createResource($filename);
 

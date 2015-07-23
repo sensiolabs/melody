@@ -2,7 +2,7 @@
 
 namespace SensioLabs\Melody\Script;
 
-use SensioLabs\Melody\Configuration\ConfigurationParser;
+use SensioLabs\Melody\Configuration\RunConfigurationParser;
 use SensioLabs\Melody\Resource\Resource;
 use SensioLabs\Melody\Resource\ResourceParser;
 
@@ -19,7 +19,7 @@ class ScriptBuilder
     public function __construct()
     {
         $this->resourceParser = new ResourceParser();
-        $this->configurationParser = new ConfigurationParser();
+        $this->configurationParser = new RunConfigurationParser();
     }
 
     public function buildScript(Resource $resource, array $arguments)

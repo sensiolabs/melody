@@ -1,0 +1,142 @@
+---------------------------------------------------------------------------
+
+by staabm at 2014-12-12T09:42:52Z
+
+Nice!
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-12T11:26:04Z
+
+May be we can store already accepted "signature" ? and so auto accept it?
+Then, IMHO, the signature could be based only on the content of the file.
+I mean, If I allow a script from you, and If someone write the **same** code,
+I don't see why I will not accept it. WDYT?
+
+---------------------------------------------------------------------------
+
+by staabm at 2014-12-12T11:27:51Z
+
+@lyrixx i dont think it is verly likely that someone provides the exactly same code. Do you think it is worth thinking about it?
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-12T11:30:13Z
+
+@staabm I mean, it's useless to generate a signature with lot of things. So we should keep it as simple as possible. and the only things important here, it's the code. So ....
+
+---------------------------------------------------------------------------
+
+by staabm at 2014-12-12T11:36:32Z
+
+@lyrixx agree from this point of view.
+
+---------------------------------------------------------------------------
+
+by jderusse at 2014-12-12T12:05:35Z
+
+I'm not sure it's a good idea to base sha on the content, someone could build a gist with the same sha than an other script...
+
+---------------------------------------------------------------------------
+
+by PunKeel at 2014-12-12T12:05:53Z
+
+@lyrixx I think trusting an user may be fine too...
+
+---------------------------------------------------------------------------
+
+by staabm at 2014-12-12T12:10:33Z
+
+@PunKeel this would only work for gists
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-12T13:09:30Z
+
+> I'm not sure it's a good idea to base sha on the content, someone could build a gist with the same sha than an other script...
+
+But because sha512 does not collision, it's safe ;)
+
+---------------------------------------------------------------------------
+
+by jderusse at 2014-12-12T15:01:55Z
+
+Every hash can collide, if I generate (2^512 + 1) gists I'll have 2 gists with the same sha512....
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-12T18:03:21Z
+
+LOL ;) 1.340780793×10¹⁵⁴ => Are you going to generate ALL the gist.
+Then,I guess github will have the same issue than youtube before we ran into this situation ;)
+
+---------------------------------------------------------------------------
+
+by jderusse at 2014-12-12T21:30:41Z
+
+If I want to do it, I'll:
+- Create a nice usefull script and share it with everybody
+- Copy the hash
+- Create **localy** a scipt with a vulnerabily followed by `__halt_compiler();`
+- Complete **localy** the script with the correct string to generate the same hash (actually, it's possible and "easy" with md5 but in few year, it may be possible with other algorithmes)
+- Update my Gist (step 1) with the new content.
+
+http://natmchugh.blogspot.fr/2014/10/how-i-created-two-images-with-same-md5.html
+http://blog.didierstevens.com/2009/01/17/playing-with-authenticode-and-md5-collisions/
+
+---------------------------------------------------------------------------
+
+by jderusse at 2014-12-12T21:38:50Z
+
+BTW, the probability is very low, You're right, I'll update the PR ;)
+
+---------------------------------------------------------------------------
+
+by PunKeel at 2014-12-12T21:53:02Z
+
+btw, for the exploit to work, it would need to know, as the attacker, which hashes are considered safe by the user ...
+
+---------------------------------------------------------------------------
+
+by staabm at 2014-12-12T22:33:10Z
+
+@PunKeel guessing which signatures could fit is not that hard. A hacker would just try to find the most popular melody scripts and make his exploit report the same signature.
+
+---------------------------------------------------------------------------
+
+by jderusse at 2014-12-12T22:40:51Z
+
+Lets be pragmatic, we sign the content with sha256.
+
+We can enforce the signature in a future PR
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2014-12-12T23:50:33Z
+
+But  if you update the gist, the signature will change, right ? :-)
+
+---------------------------------------------------------------------------
+
+by jderusse at 2014-12-13T23:08:26Z
+
+I implement a melody's Config, and store signatures inside it.
+What's your opinions?
+
+---------------------------------------------------------------------------
+
+by jderusse at 2014-12-14T14:52:06Z
+
+Ready for review
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2015-07-22T16:43:00Z
+
+@jderusse Could you rebase ? (and finish this one ;))
+
+---------------------------------------------------------------------------
+
+by jderusse at 2015-07-22T21:12:59Z
+
+rebased and green :)

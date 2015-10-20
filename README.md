@@ -1,5 +1,6 @@
 Melody - One-file composer scripts
 ==================================
+[![Build Status](https://api.travis-ci.org/sensiolabs/melody.png?branch=master)](https://travis-ci.org/sensiolabs/melody)
 
 Create a file named `test.php`:
 

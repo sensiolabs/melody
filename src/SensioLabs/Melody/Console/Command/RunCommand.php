@@ -160,8 +160,8 @@ EOT
             try {
                 $handler->provideCredentials($credentials, $userConfig);
                 break;
-            } catch (InvalidCredentialsException $ex) {
-                $output->writeln(sprintf('<error>Something wrong happened: %s.</error>', $ex->getMessage()));
+            } catch (InvalidCredentialsException $e) {
+                $output->writeln(sprintf('<error>Something wrong happened: %s.</error>', $e->getMessage()));
             }
         }
     }

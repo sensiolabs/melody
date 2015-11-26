@@ -11,6 +11,7 @@ class UserConfiguration
 {
     private $trustedSignatures = array();
     private $trustedUsers = array();
+    private $authenticationData = array();
 
     public function toArray()
     {
@@ -19,6 +20,7 @@ class UserConfiguration
                 'signatures' => $this->getTrustedSignatures(),
                 'users' => $this->getTrustedUsers(),
             ),
+            'auth' => $this->authenticationData,
         );
     }
 
@@ -31,6 +33,9 @@ class UserConfiguration
             if (array_key_exists('users', $data['trust'])) {
                 $this->trustedUsers = (array) $data['trust']['users'];
             }
+        }
+        if (array_key_exists('auth', $data) && is_array($data['auth'])) {
+            $this->authenticationData = $data['auth'];
         }
     }
 
@@ -76,5 +81,15 @@ class UserConfiguration
         );
 
         return $this;
+    }
+
+    public function setAuthenticationData($handlerKey, $data)
+    {
+        $this->authenticationData[$handlerKey] = $data;
+    }
+
+    public function getAuthenticationData($handlerKey)
+    {
+        return isset($this->authenticationData[$handlerKey]) ? $this->authenticationData[$handlerKey] : null;
     }
 }

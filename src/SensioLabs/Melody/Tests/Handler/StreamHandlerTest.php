@@ -2,6 +2,7 @@
 
 namespace SensioLabs\Melody\Tests\Handler;
 
+use SensioLabs\Melody\Configuration\UserConfiguration;
 use SensioLabs\Melody\Handler\StreamHandler;
 
 class StreamHandlerTest extends \PHPUnit_Framework_TestCase
@@ -40,7 +41,7 @@ class StreamHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $filename = __DIR__.'/../Fixtures/hello-world.php';
 
-        $resource = $this->handler->createResource($filename);
+        $resource = $this->handler->createResource($filename, new UserConfiguration());
 
         $this->assertInstanceOf('SensioLabs\Melody\Resource\Resource', $resource);
         $this->assertSame(file_get_contents($filename), $resource->getContent());

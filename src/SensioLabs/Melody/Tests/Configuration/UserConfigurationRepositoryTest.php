@@ -69,6 +69,7 @@ class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
         $config = new UserConfiguration();
         $config->addTrustedSignatures(array('foo', 'bar'));
         $config->addTrustedUsers(array('baz', 'qux'));
+        $config->setAuthenticationData('foo', array('bar' => 'baz'));
 
         $repositpory = new UserConfigurationRepository($filename);
         $repositpory->save($config);
@@ -80,6 +81,9 @@ class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
   users:
     - baz
     - qux
+auth:
+  foo:
+    bar: baz
 ';
 
         $this->assertTrue(file_exists($filename));

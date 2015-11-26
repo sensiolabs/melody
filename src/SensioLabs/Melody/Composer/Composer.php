@@ -131,4 +131,31 @@ class Composer
 
         return;
     }
+
+    /*
+     * Copied from the official Composer repository.
+     *
+     * code: https://github.com/composer/composer/blob/master/src/Composer/Factory.php
+     * author: Jordi Boggiano <j.boggiano@seld.be>
+     * copyright holder: (c) 2015 Jordi Boggiano
+     */
+    public static function getComposerHomeDir()
+    {
+        $home = getenv('COMPOSER_HOME');
+        if (!$home) {
+            if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+                if (!getenv('APPDATA')) {
+                    throw new \RuntimeException('The APPDATA or COMPOSER_HOME environment variable must be set for composer to run correctly');
+                }
+                $home = strtr(getenv('APPDATA'), '\\', '/').'/Composer';
+            } else {
+                if (!getenv('HOME')) {
+                    throw new \RuntimeException('The HOME or COMPOSER_HOME environment variable must be set for composer to run correctly');
+                }
+                $home = rtrim(getenv('HOME'), '/').'/.composer';
+            }
+        }
+
+        return $home;
+    }
 }

@@ -3,11 +3,16 @@
 namespace SensioLabs\Melody\Console\Command;
 
 use SensioLabs\Melody\Configuration\RunConfiguration;
+use SensioLabs\Melody\Configuration\UserConfiguration;
 use SensioLabs\Melody\Configuration\UserConfigurationRepository;
+use SensioLabs\Melody\Exception\AuthenticationRequiredException;
+use SensioLabs\Melody\Exception\InvalidCredentialsException;
 use SensioLabs\Melody\Exception\TrustException;
+use SensioLabs\Melody\Handler\AuthenticableHandlerInterface;
 use SensioLabs\Melody\Melody;
 use SensioLabs\Melody\Resource\Resource;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -113,6 +118,50 @@ EOT
 
                 $userConfig->addTrustedSignature($e->getResource()->getSignature());
                 $configRepository->save($userConfig);
+            } catch (AuthenticationRequiredException $e) {
+                $output->writeln(sprintf(
+                    '<error>The following error was encountered while trying to access the resource: "%s"</error>',
+                    $e->getMessage()
+                ));
+
+                $handler = $e->getHandler();
+                if (!$handler instanceof AuthenticableHandlerInterface) {
+                    $output->writeln(sprintf('<error>%s.</error>', $e->getMessage()));
+
+                    return 1;
+                }
+                $this->askCredentials($handler, $userConfig, $input, $output);
+            }
+        }
+    }
+
+    private function askCredentials(AuthenticableHandlerInterface $handler, UserConfiguration $userConfig, InputInterface $input, OutputInterface $output)
+    {
+        // Normalize required credentials format:
+        $requiredCredentials = $handler->getRequiredCredentials();
+        if (ctype_digit(implode('', array_keys($requiredCredentials)))) {
+            $requiredCredentials = array_map(function () {
+                return AuthenticableHandlerInterface::CREDENTIALS_NORMAL;
+            }, array_flip($requiredCredentials));
+        }
+
+        /** @var QuestionHelper $questionHelper */
+        $questionHelper = $this->getHelper('question');
+
+        while (true) {
+            $credentials = [];
+            $output->writeln('Authentication required. Please, provide the following informations:');
+            foreach ($requiredCredentials as $name => $type) {
+                $question = new Question(sprintf('<fg=yellow>%s:</> ', $name));
+                $question->setHidden(AuthenticableHandlerInterface::CREDENTIALS_SECRET === $type);
+                $credentials[$name] = $questionHelper->ask($input, $output, $question);
+            }
+
+            try {
+                $handler->provideCredentials($credentials, $userConfig);
+                break;
+            } catch (InvalidCredentialsException $ex) {
+                $output->writeln(sprintf('<error>Something wrong happened: %s.</error>', $ex->getMessage()));
             }
         }
     }

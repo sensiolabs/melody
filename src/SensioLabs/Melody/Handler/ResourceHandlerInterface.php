@@ -2,7 +2,7 @@
 
 namespace SensioLabs\Melody\Handler;
 
-use SensioLabs\Melody\Resource\Resource;
+use SensioLabs\Melody\Configuration\UserConfiguration;
 
 /**
  * Interface ResourceHandlerInterface.
@@ -24,9 +24,11 @@ interface ResourceHandlerInterface
     /**
      * Creates a new resources, based on a filename.
      *
-     * @param string $filename
+     * @param string            $filename
+     * @param UserConfiguration $userConfig User configuration that could be used to retrieve
+     *                                      authentication information for instance.
      *
      * @return Resource
      */
-    public function createResource($filename);
+    public function createResource($filename, UserConfiguration $userConfig);
 }

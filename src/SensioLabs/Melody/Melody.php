@@ -51,7 +51,7 @@ class Melody
     {
         $this->garbageCollector->run();
 
-        $resource = $this->createResource($resourceName);
+        $resource = $this->createResource($resourceName, $userConfiguration);
         $this->assertTrustedResource($resource, $runConfiguration, $userConfiguration);
 
         $script = $this->scriptBuilder->buildScript($resource, $arguments);
@@ -88,18 +88,19 @@ class Melody
     }
 
     /**
-     * @param string $resourceName path to the resource
+     * @param string            $resourceName      path to the resource
+     * @param UserConfiguration $userConfiguration
      *
      * @return Resource
      */
-    private function createResource($resourceName)
+    private function createResource($resourceName, UserConfiguration $userConfiguration)
     {
         foreach ($this->handlers as $handler) {
             if (!$handler->supports($resourceName)) {
                 continue;
             }
 
-            return $handler->createResource($resourceName);
+            return $handler->createResource($resourceName, $userConfiguration);
         }
 
         throw new \LogicException(sprintf('No handler found for resource "%s".', $resourceName));

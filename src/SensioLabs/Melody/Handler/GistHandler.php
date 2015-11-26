@@ -2,6 +2,11 @@
 
 namespace SensioLabs\Melody\Handler;
 
+use SensioLabs\Melody\Composer\Composer;
+use SensioLabs\Melody\Configuration\UserConfiguration;
+use SensioLabs\Melody\Configuration\UserConfigurationRepository;
+use SensioLabs\Melody\Exception\AuthenticationRequiredException;
+use SensioLabs\Melody\Exception\InvalidCredentialsException;
 use SensioLabs\Melody\Handler\Github\Gist;
 use SensioLabs\Melody\Resource\Resource;
 use SensioLabs\Melody\Resource\Metadata;
@@ -13,7 +18,7 @@ use SensioLabs\Melody\Resource\Metadata;
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Jérémy Derussé <jeremy@derusse.com>
  */
-class GistHandler implements ResourceHandlerInterface
+class GistHandler implements AuthenticableHandlerInterface
 {
     /**
      * {@inheritdoc}
@@ -26,16 +31,27 @@ class GistHandler implements ResourceHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function createResource($uri)
+    public function createResource($filename, UserConfiguration $userConfig)
     {
-        $gist = new Gist($uri);
+        $gist = new Gist($filename, $this->getOAuthToken($userConfig));
         $data = $gist->get();
+        $content = $data['content'];
+        $status = $data['status'];
 
-        if (array_key_exists('message', $data)) {
-            throw new \InvalidArgumentException('There is an issue with your gist URL: '.$data['message']);
+        if (200 !== $status) {
+            if (in_array($status, array(401, 403))) {
+                throw new AuthenticationRequiredException($this, $content['message']);
+            }
+
+            $message = 'There is an issue with your gist URL: ';
+            if (array_key_exists('message', $content)) {
+                throw new \InvalidArgumentException($message.$content['message']);
+            }
+
+            throw new \InvalidArgumentException($message.'Expected 200 status, got '.$status);
         }
 
-        $files = $data['files'];
+        $files = $content['files'];
 
         // Throw an error if the gist contains multiple files
         if (1 !== count($files)) {
@@ -45,14 +61,95 @@ class GistHandler implements ResourceHandlerInterface
         // Fetch the only element in the array
         $file = current($files);
         $metadata = new Metadata(
-            $data['id'],
-            $data['owner']['login'],
-            new \DateTime($data['created_at']),
-            new \DateTime($data['updated_at']),
-            count($data['history']),
-            $data['html_url']
+            $content['id'],
+            $content['owner']['login'],
+            new \DateTime($content['created_at']),
+            new \DateTime($content['updated_at']),
+            count($content['history']),
+            $content['html_url']
         );
 
         return new Resource($file['content'], $metadata);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRequiredCredentials()
+    {
+        return array(
+            'username' => self::CREDENTIALS_NORMAL,
+            'password' => self::CREDENTIALS_SECRET,
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function provideCredentials(array $credentials, UserConfiguration $userConfig)
+    {
+        if (empty($credentials['username']) || empty($credentials['password'])) {
+            throw new InvalidCredentialsException('You should provide non-empty "username" and "password" information.');
+        }
+
+        $handle = curl_init();
+
+        $payload = json_encode(array(
+            'scopes' => array('public_repo'),
+            'note' => sprintf('Melody on %s %s', gethostname(), date('Y-m-d Hi')),
+        ));
+
+        curl_setopt_array($handle, array(
+            CURLOPT_URL => 'https://api.github.com/authorizations',
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $payload,
+            CURLOPT_HTTPHEADER => array(
+                'Accept: application/vnd.github.v3+json',
+                'User-Agent: Melody-Script',
+                'Content-Type: application/json',
+                'Content-Length: '.strlen($payload),
+            ),
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_USERPWD => sprintf('%s:%s', $credentials['username'], $credentials['password']),
+        ));
+
+        if ($http_proxy = filter_input(INPUT_ENV, 'HTTPS_PROXY', FILTER_SANITIZE_URL)) {
+            curl_setopt($handle, CURLOPT_PROXY, $http_proxy);
+        }
+
+        $content = curl_exec($handle);
+        curl_close($handle);
+
+        $response = json_decode($content, true);
+
+        if (!isset($response['token'])) {
+            throw new InvalidCredentialsException(isset($response['message']) ? $response['message'] : 'Unable to get token.');
+        }
+
+        $userConfig->setAuthenticationData('gist', array('token' => $response['token']));
+        $configRepository = new UserConfigurationRepository();
+        $configRepository->save($userConfig);
+    }
+
+    /**
+     * Try to retrieve a token from user config or composer's auth.json file.
+     *
+     * @param UserConfiguration $userConfig
+     *
+     * @return null|string
+     */
+    private function getOAuthToken(UserConfiguration $userConfig)
+    {
+        $authData = $userConfig->getAuthenticationData('gist');
+        if (isset($authData['token'])) {
+            return $authData['token'];
+        }
+
+        if (file_exists($path = Composer::getComposerHomeDir().'/auth.json')) {
+            $authJson = json_decode(file_get_contents($path), true);
+            if (isset($authJson['github-oauth']['github.com'])) {
+                return $authJson['github-oauth']['github.com'];
+            }
+        }
     }
 }

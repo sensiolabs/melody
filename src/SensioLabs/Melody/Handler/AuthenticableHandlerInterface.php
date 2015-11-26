@@ -6,8 +6,6 @@ use SensioLabs\Melody\Configuration\UserConfiguration;
 use SensioLabs\Melody\Exception\InvalidCredentialsException;
 
 /**
- * Interface AuthenticableHandlerInterface.
- *
  * @author Maxime STEINHAUSSER <maxime.steinhausser@gmail.com>
  */
 interface AuthenticableHandlerInterface extends ResourceHandlerInterface

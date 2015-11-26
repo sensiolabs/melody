@@ -5,8 +5,6 @@ namespace SensioLabs\Melody\Exception;
 use SensioLabs\Melody\Handler\ResourceHandlerInterface;
 
 /**
- * Class AuthenticationRequiredException.
- *
  * @author Maxime STEINHAUSSER <maxime.steinhausser@gmail.com>
  */
 class AuthenticationRequiredException extends \LogicException

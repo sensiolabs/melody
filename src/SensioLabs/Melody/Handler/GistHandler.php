@@ -18,7 +18,7 @@ use SensioLabs\Melody\Resource\Metadata;
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Jérémy Derussé <jeremy@derusse.com>
  */
-class GistHandler implements AuthenticableHandlerInterface
+class GistHandler implements ResourceHandlerInterface, AuthenticableHandlerInterface
 {
     /**
      * {@inheritdoc}

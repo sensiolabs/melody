@@ -8,7 +8,7 @@ use SensioLabs\Melody\Exception\InvalidCredentialsException;
 /**
  * @author Maxime STEINHAUSSER <maxime.steinhausser@gmail.com>
  */
-interface AuthenticableHandlerInterface extends ResourceHandlerInterface
+interface AuthenticableHandlerInterface
 {
     const CREDENTIALS_NORMAL = 'normal';
     const CREDENTIALS_SECRET = 'secret';

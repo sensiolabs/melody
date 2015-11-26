@@ -148,7 +148,7 @@ EOT
         /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
-        while (true) {
+        for (;;) {
             $credentials = [];
             $output->writeln('Authentication required. Please, provide the following informations:');
             foreach ($requiredCredentials as $name => $type) {

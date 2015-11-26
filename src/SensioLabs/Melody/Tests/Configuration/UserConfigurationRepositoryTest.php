@@ -81,7 +81,7 @@ class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
   users:
     - baz
     - qux
-auth:
+authentication_data:
   foo:
     bar: baz
 ';

@@ -20,7 +20,7 @@ class UserConfiguration
                 'signatures' => $this->getTrustedSignatures(),
                 'users' => $this->getTrustedUsers(),
             ),
-            'auth' => $this->authenticationData,
+            'authentication_data' => $this->authenticationData,
         );
     }
 
@@ -34,8 +34,8 @@ class UserConfiguration
                 $this->trustedUsers = (array) $data['trust']['users'];
             }
         }
-        if (array_key_exists('auth', $data) && is_array($data['auth'])) {
-            $this->authenticationData = $data['auth'];
+        if (array_key_exists('authentication_data', $data) && is_array($data['authentication_data'])) {
+            $this->authenticationData = $data['authentication_data'];
         }
     }
 

@@ -2,6 +2,10 @@ language: php
 
 sudo: false
 
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
 php:
   - 5.3
   - 5.4
@@ -11,7 +15,7 @@ php:
   - hhvm
 
 install:
-    - composer --prefer-source --dev install
+    - composer --prefer-dist install
 
 script:
   - phpunit

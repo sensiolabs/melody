@@ -2,6 +2,8 @@
 
 namespace SensioLabs\Melody\Configuration;
 
+use SensioLabs\Melody\Security\AuthenticationStorage;
+
 /**
  * UserConfiguration.
  *
@@ -11,7 +13,12 @@ class UserConfiguration
 {
     private $trustedSignatures = array();
     private $trustedUsers = array();
-    private $authenticationData = array();
+    private $authenticationStorage;
+
+    public function __construct(AuthenticationStorage $authenticationStorage = null)
+    {
+        $this->authenticationStorage = $authenticationStorage;
+    }
 
     public function toArray()
     {
@@ -20,7 +27,7 @@ class UserConfiguration
                 'signatures' => $this->getTrustedSignatures(),
                 'users' => $this->getTrustedUsers(),
             ),
-            'authentication_data' => $this->authenticationData,
+            'authentication_data' => null !== $this->authenticationStorage ? $this->authenticationStorage->all() : array(),
         );
     }
 
@@ -34,8 +41,8 @@ class UserConfiguration
                 $this->trustedUsers = (array) $data['trust']['users'];
             }
         }
-        if (array_key_exists('authentication_data', $data) && is_array($data['authentication_data'])) {
-            $this->authenticationData = $data['authentication_data'];
+        if (array_key_exists('authentication_data', $data) && is_array($data['authentication_data']) && null !== $this->authenticationStorage) {
+            $this->authenticationStorage->replace($data['authentication_data']);
         }
     }
 
@@ -81,15 +88,5 @@ class UserConfiguration
         );
 
         return $this;
-    }
-
-    public function setAuthenticationData($handlerKey, $data)
-    {
-        $this->authenticationData[$handlerKey] = $data;
-    }
-
-    public function getAuthenticationData($handlerKey)
-    {
-        return isset($this->authenticationData[$handlerKey]) ? $this->authenticationData[$handlerKey] : null;
     }
 }

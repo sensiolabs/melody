@@ -5,6 +5,7 @@ namespace SensioLabs\Melody\Tests;
 use SensioLabs\Melody\Configuration\RunConfiguration;
 use SensioLabs\Melody\Configuration\UserConfiguration;
 use SensioLabs\Melody\Melody;
+use SensioLabs\Melody\Security\AuthenticationStorage;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
@@ -99,7 +100,6 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('memory_limit=42M', $output);
     }
 
-
     /**
      * @dataProvider provideGists
      */
@@ -144,7 +144,8 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     private function melodyRunStream($protocol, $fixture, array $options = array())
     {
-        $melody = new Melody();
+        $authenticationStorage = new AuthenticationStorage();
+        $melody = new Melody($authenticationStorage);
 
         $filename = sprintf('%s://%s', $protocol, $fixture);
 
@@ -172,7 +173,8 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     private function melodyRun($filename, array $options = array())
     {
-        $melody = new Melody();
+        $authenticationStorage = new AuthenticationStorage();
+        $melody = new Melody($authenticationStorage);
 
         $options = array_replace(array(
             'trust' => false,

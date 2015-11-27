@@ -2,7 +2,6 @@
 
 namespace SensioLabs\Melody\Handler;
 
-use SensioLabs\Melody\Configuration\UserConfiguration;
 use SensioLabs\Melody\Exception\InvalidCredentialsException;
 
 /**
@@ -21,12 +20,20 @@ interface AuthenticableHandlerInterface
     public function getRequiredCredentials();
 
     /**
-     * Provides credentials to be used at some point by the handler.
+     * Authenticates using given credentials and returns authentication data for storage or further use.
      *
-     * @param array             $credentials
-     * @param UserConfiguration $userConfig
+     * @param array $credentials
+     *
+     * @return string|array
      *
      * @throws InvalidCredentialsException
      */
-    public function provideCredentials(array $credentials, UserConfiguration $userConfig);
+    public function authenticate(array $credentials);
+
+    /**
+     * Get the key allowing to identify this handler.
+     *
+     * @return string
+     */
+    public function getKey();
 }

@@ -3,13 +3,12 @@
 namespace SensioLabs\Melody\Handler;
 
 use SensioLabs\Melody\Composer\Composer;
-use SensioLabs\Melody\Configuration\UserConfiguration;
-use SensioLabs\Melody\Configuration\UserConfigurationRepository;
 use SensioLabs\Melody\Exception\AuthenticationRequiredException;
 use SensioLabs\Melody\Exception\InvalidCredentialsException;
 use SensioLabs\Melody\Handler\Github\Gist;
 use SensioLabs\Melody\Resource\Resource;
 use SensioLabs\Melody\Resource\Metadata;
+use SensioLabs\Melody\Security\AuthenticationStorage;
 
 /**
  * Class GistHandler.
@@ -20,6 +19,13 @@ use SensioLabs\Melody\Resource\Metadata;
  */
 class GistHandler implements ResourceHandlerInterface, AuthenticableHandlerInterface
 {
+    private $authenticationStorage;
+
+    public function __construct(AuthenticationStorage $authenticationStorage)
+    {
+        $this->authenticationStorage = $authenticationStorage;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,9 +37,9 @@ class GistHandler implements ResourceHandlerInterface, AuthenticableHandlerInter
     /**
      * {@inheritdoc}
      */
-    public function createResource($filename, UserConfiguration $userConfig)
+    public function createResource($filename)
     {
-        $gist = new Gist($filename, $this->getOAuthToken($userConfig));
+        $gist = new Gist($filename, $this->getOAuthToken());
         $data = $gist->get();
         $content = $data['content'];
         $status = $data['status'];
@@ -86,7 +92,7 @@ class GistHandler implements ResourceHandlerInterface, AuthenticableHandlerInter
     /**
      * {@inheritdoc}
      */
-    public function provideCredentials(array $credentials, UserConfiguration $userConfig)
+    public function authenticate(array $credentials)
     {
         if (empty($credentials['username']) || empty($credentials['password'])) {
             throw new InvalidCredentialsException('You should provide non-empty "username" and "password" information.');
@@ -126,21 +132,25 @@ class GistHandler implements ResourceHandlerInterface, AuthenticableHandlerInter
             throw new InvalidCredentialsException(isset($response['message']) ? $response['message'] : 'Unable to get token.');
         }
 
-        $userConfig->setAuthenticationData('gist', array('token' => $response['token']));
-        $configRepository = new UserConfigurationRepository();
-        $configRepository->save($userConfig);
+        return array('token' => $response['token']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getKey()
+    {
+        return 'gist';
     }
 
     /**
      * Try to retrieve a token from user config or composer's auth.json file.
      *
-     * @param UserConfiguration $userConfig
-     *
      * @return null|string
      */
-    private function getOAuthToken(UserConfiguration $userConfig)
+    private function getOAuthToken()
     {
-        $authData = $userConfig->getAuthenticationData('gist');
+        $authData = $this->authenticationStorage->get($this->getKey());
         if (isset($authData['token'])) {
             return $authData['token'];
         }

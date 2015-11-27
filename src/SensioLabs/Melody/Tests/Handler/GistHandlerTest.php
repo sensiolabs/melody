@@ -2,8 +2,8 @@
 
 namespace SensioLabs\Melody\Tests\Handler;
 
-use SensioLabs\Melody\Configuration\UserConfiguration;
 use SensioLabs\Melody\Handler\GistHandler;
+use SensioLabs\Melody\Security\AuthenticationStorage;
 
 class GistHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,7 +14,7 @@ class GistHandlerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->handler = new GistHandler();
+        $this->handler = new GistHandler(new AuthenticationStorage());
     }
 
     protected function tearDown()
@@ -54,7 +54,7 @@ class GistHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateResource()
     {
-        $resource = $this->handler->createResource(self::SINGLE_URL, new UserConfiguration());
+        $resource = $this->handler->createResource(self::SINGLE_URL);
 
         $this->assertInstanceOf('SensioLabs\Melody\Resource\Resource', $resource);
         $this->assertContains('$composer', $resource->getContent());
@@ -66,6 +66,6 @@ class GistHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateResourceWithMultipleFileInGist()
     {
-        $this->handler->createResource(self::MULTI_URL, new UserConfiguration());
+        $this->handler->createResource(self::MULTI_URL);
     }
 }

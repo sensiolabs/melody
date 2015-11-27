@@ -2,7 +2,6 @@
 
 namespace SensioLabs\Melody\Handler;
 
-use SensioLabs\Melody\Configuration\UserConfiguration;
 use SensioLabs\Melody\Resource\Metadata;
 use SensioLabs\Melody\Resource\Resource;
 
@@ -26,7 +25,7 @@ class StreamHandler implements ResourceHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function createResource($filename, UserConfiguration $userConfig)
+    public function createResource($filename)
     {
         $metadata = new Metadata(
             basename($filename),

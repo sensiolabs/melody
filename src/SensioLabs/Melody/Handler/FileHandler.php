@@ -2,7 +2,6 @@
 
 namespace SensioLabs\Melody\Handler;
 
-use SensioLabs\Melody\Configuration\UserConfiguration;
 use SensioLabs\Melody\Resource\LocalResource;
 use SensioLabs\Melody\Resource\Metadata;
 
@@ -25,7 +24,7 @@ class FileHandler implements ResourceHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function createResource($filename, UserConfiguration $userConfig)
+    public function createResource($filename)
     {
         $stat = stat($filename);
         $metadata = new Metadata(

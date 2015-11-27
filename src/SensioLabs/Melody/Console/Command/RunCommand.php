@@ -3,7 +3,6 @@
 namespace SensioLabs\Melody\Console\Command;
 
 use SensioLabs\Melody\Configuration\RunConfiguration;
-use SensioLabs\Melody\Configuration\UserConfiguration;
 use SensioLabs\Melody\Configuration\UserConfigurationRepository;
 use SensioLabs\Melody\Exception\AuthenticationRequiredException;
 use SensioLabs\Melody\Exception\InvalidCredentialsException;
@@ -11,6 +10,7 @@ use SensioLabs\Melody\Exception\TrustException;
 use SensioLabs\Melody\Handler\AuthenticableHandlerInterface;
 use SensioLabs\Melody\Melody;
 use SensioLabs\Melody\Resource\Resource;
+use SensioLabs\Melody\Security\AuthenticationStorage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -73,9 +73,10 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $melody = new Melody();
+        $authenticationStorage = new AuthenticationStorage();
         $configRepository = new UserConfigurationRepository();
-        $userConfig = $configRepository->load();
+        $userConfig = $configRepository->load($authenticationStorage);
+        $melody = new Melody($authenticationStorage);
 
         $processHelper = $this->getHelperSet()->get('process');
 
@@ -130,12 +131,14 @@ EOT
 
                     return 1;
                 }
-                $this->askCredentials($handler, $userConfig, $input, $output);
+                $authenticationData = $this->askCredentials($handler, $input, $output);
+                $authenticationStorage->set($handler->getKey(), $authenticationData);
+                $configRepository->save($userConfig);
             }
         }
     }
 
-    private function askCredentials(AuthenticableHandlerInterface $handler, UserConfiguration $userConfig, InputInterface $input, OutputInterface $output)
+    private function askCredentials(AuthenticableHandlerInterface $handler, InputInterface $input, OutputInterface $output)
     {
         // Normalize required credentials format:
         $requiredCredentials = $handler->getRequiredCredentials();
@@ -158,7 +161,7 @@ EOT
             }
 
             try {
-                $handler->provideCredentials($credentials, $userConfig);
+                return $handler->authenticate($credentials);
                 break;
             } catch (InvalidCredentialsException $e) {
                 $output->writeln(sprintf('<error>Something wrong happened: %s.</error>', $e->getMessage()));

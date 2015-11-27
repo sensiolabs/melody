@@ -13,6 +13,7 @@ use SensioLabs\Melody\Resource\LocalResource;
 use SensioLabs\Melody\Resource\Resource;
 use SensioLabs\Melody\Runner\Runner;
 use SensioLabs\Melody\Script\ScriptBuilder;
+use SensioLabs\Melody\Security\AuthenticationStorage;
 use SensioLabs\Melody\WorkingDirectory\GarbageCollector;
 use SensioLabs\Melody\WorkingDirectory\WorkingDirectoryFactory;
 
@@ -32,13 +33,13 @@ class Melody
     private $composer;
     private $runner;
 
-    public function __construct()
+    public function __construct(AuthenticationStorage $authenticationStorage)
     {
         $storagePath = sprintf('%s/melody', sys_get_temp_dir());
         $this->garbageCollector = new GarbageCollector($storagePath);
         $this->handlers = array(
             new FileHandler(),
-            new GistHandler(),
+            new GistHandler($authenticationStorage),
             new StreamHandler(),
         );
         $this->scriptBuilder = new ScriptBuilder();
@@ -51,7 +52,7 @@ class Melody
     {
         $this->garbageCollector->run();
 
-        $resource = $this->createResource($resourceName, $userConfiguration);
+        $resource = $this->createResource($resourceName);
         $this->assertTrustedResource($resource, $runConfiguration, $userConfiguration);
 
         $script = $this->scriptBuilder->buildScript($resource, $arguments);
@@ -88,19 +89,18 @@ class Melody
     }
 
     /**
-     * @param string            $resourceName      path to the resource
-     * @param UserConfiguration $userConfiguration
+     * @param string $resourceName path to the resource
      *
      * @return Resource
      */
-    private function createResource($resourceName, UserConfiguration $userConfiguration)
+    private function createResource($resourceName)
     {
         foreach ($this->handlers as $handler) {
             if (!$handler->supports($resourceName)) {
                 continue;
             }
 
-            return $handler->createResource($resourceName, $userConfiguration);
+            return $handler->createResource($resourceName);
         }
 
         throw new \LogicException(sprintf('No handler found for resource "%s".', $resourceName));

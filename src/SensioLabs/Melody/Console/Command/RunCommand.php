@@ -140,21 +140,13 @@ EOT
 
     private function askCredentials(AuthenticableHandlerInterface $handler, InputInterface $input, OutputInterface $output)
     {
-        // Normalize required credentials format:
-        $requiredCredentials = $handler->getRequiredCredentials();
-        if (ctype_digit(implode('', array_keys($requiredCredentials)))) {
-            $requiredCredentials = array_map(function () {
-                return AuthenticableHandlerInterface::CREDENTIALS_NORMAL;
-            }, array_flip($requiredCredentials));
-        }
-
         /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
 
         for (;;) {
             $credentials = [];
             $output->writeln('Authentication required. Please, provide the following informations:');
-            foreach ($requiredCredentials as $name => $type) {
+            foreach ($this->getRequiredCredentials($handler) as $name => $type) {
                 $question = new Question(sprintf('<fg=yellow>%s:</> ', $name));
                 $question->setHidden(AuthenticableHandlerInterface::CREDENTIALS_SECRET === $type);
                 $credentials[$name] = $questionHelper->ask($input, $output, $question);
@@ -167,6 +159,19 @@ EOT
                 $output->writeln(sprintf('<error>Something wrong happened: %s.</error>', $e->getMessage()));
             }
         }
+    }
+
+    private function getRequiredCredentials(AuthenticableHandlerInterface $handler)
+    {
+        $requiredCredentials = $handler->getRequiredCredentials();
+
+        if (!ctype_digit(implode('', array_keys($requiredCredentials)))) {
+            return $requiredCredentials;
+        }
+
+        return $requiredCredentials = array_map(function () {
+            return AuthenticableHandlerInterface::CREDENTIALS_NORMAL;
+        }, array_flip($requiredCredentials));
     }
 
     private function confirmTrust(Resource $resource, InputInterface $input, OutputInterface $output)

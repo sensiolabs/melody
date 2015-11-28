@@ -15,6 +15,15 @@ interface AuthenticableHandlerInterface
     /**
      * Returns an array of the required credentials.
      *
+     * The array should be like:
+     *
+     * array(
+     *     'username' => AuthenticableHandlerInterface::CREDENTIALS_NORMAL,
+     *     'password' => AuthenticableHandlerInterface::CREDENTIALS_SECRET,
+     * );
+     *
+     * or array('token') if none of the information are particularly sensitive (defaults to AuthenticableHandlerInterface::CREDENTIALS_NORMAL).
+     *
      * @return array
      */
     public function getRequiredCredentials();

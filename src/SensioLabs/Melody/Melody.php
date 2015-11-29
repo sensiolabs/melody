@@ -13,7 +13,7 @@ use SensioLabs\Melody\Resource\LocalResource;
 use SensioLabs\Melody\Resource\Resource;
 use SensioLabs\Melody\Runner\Runner;
 use SensioLabs\Melody\Script\ScriptBuilder;
-use SensioLabs\Melody\Security\AuthenticationStorage;
+use SensioLabs\Melody\Security\TokenStorage;
 use SensioLabs\Melody\WorkingDirectory\GarbageCollector;
 use SensioLabs\Melody\WorkingDirectory\WorkingDirectoryFactory;
 
@@ -33,13 +33,13 @@ class Melody
     private $composer;
     private $runner;
 
-    public function __construct(AuthenticationStorage $authenticationStorage)
+    public function __construct(TokenStorage $tokenStorage)
     {
         $storagePath = sprintf('%s/melody', sys_get_temp_dir());
         $this->garbageCollector = new GarbageCollector($storagePath);
         $this->handlers = array(
             new FileHandler(),
-            new GistHandler($authenticationStorage),
+            new GistHandler($tokenStorage),
             new StreamHandler(),
         );
         $this->scriptBuilder = new ScriptBuilder();

@@ -9,7 +9,7 @@ use SensioLabs\Melody\Exception\TrustException;
 use SensioLabs\Melody\Handler\AuthenticableHandlerInterface;
 use SensioLabs\Melody\Melody;
 use SensioLabs\Melody\Resource\Resource;
-use SensioLabs\Melody\Security\AuthenticationStorage;
+use SensioLabs\Melody\Security\TokenStorage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -71,10 +71,10 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $authenticationStorage = new AuthenticationStorage();
+        $tokenStorage = new TokenStorage();
         $configRepository = new UserConfigurationRepository();
-        $userConfig = $configRepository->load($authenticationStorage);
-        $melody = new Melody($authenticationStorage);
+        $userConfig = $configRepository->load($tokenStorage);
+        $melody = new Melody($tokenStorage);
 
         $processHelper = $this->getHelperSet()->get('process');
 
@@ -130,8 +130,8 @@ EOT
                     return 1;
                 }
                 $handlerAuthenticationHelper = $this->getHelper('handler_authentication');
-                $authenticationData = $handlerAuthenticationHelper->askCredentials($input, $output, $handler);
-                $authenticationStorage->set($handler->getKey(), $authenticationData);
+                $token = $handlerAuthenticationHelper->askCredentials($input, $output, $handler);
+                $tokenStorage->set($handler->getKey(), $token);
                 $configRepository->save($userConfig);
             }
         }

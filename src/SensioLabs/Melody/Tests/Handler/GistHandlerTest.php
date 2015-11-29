@@ -3,7 +3,7 @@
 namespace SensioLabs\Melody\Tests\Handler;
 
 use SensioLabs\Melody\Handler\GistHandler;
-use SensioLabs\Melody\Security\AuthenticationStorage;
+use SensioLabs\Melody\Security\TokenStorage;
 
 class GistHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,7 +14,7 @@ class GistHandlerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->handler = new GistHandler(new AuthenticationStorage());
+        $this->handler = new GistHandler(new TokenStorage());
     }
 
     protected function tearDown()

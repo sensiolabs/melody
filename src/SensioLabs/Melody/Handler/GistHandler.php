@@ -8,7 +8,9 @@ use SensioLabs\Melody\Exception\InvalidCredentialsException;
 use SensioLabs\Melody\Handler\Github\Gist;
 use SensioLabs\Melody\Resource\Resource;
 use SensioLabs\Melody\Resource\Metadata;
-use SensioLabs\Melody\Security\AuthenticationStorage;
+use SensioLabs\Melody\Security\Token;
+use SensioLabs\Melody\Security\TokenStorage;
+use SensioLabs\Melody\Security\SafeToken;
 
 /**
  * Class GistHandler.
@@ -21,7 +23,7 @@ class GistHandler implements ResourceHandlerInterface, AuthenticableHandlerInter
 {
     private $authenticationStorage;
 
-    public function __construct(AuthenticationStorage $authenticationStorage)
+    public function __construct(TokenStorage $authenticationStorage)
     {
         $this->authenticationStorage = $authenticationStorage;
     }
@@ -132,7 +134,7 @@ class GistHandler implements ResourceHandlerInterface, AuthenticableHandlerInter
             throw new InvalidCredentialsException(isset($response['message']) ? $response['message'] : 'Unable to get token.');
         }
 
-        return array('token' => $response['token']);
+        return new SafeToken(array('oauth_token' => $response['token']));
     }
 
     /**
@@ -150,9 +152,12 @@ class GistHandler implements ResourceHandlerInterface, AuthenticableHandlerInter
      */
     private function getOAuthToken()
     {
-        $authData = $this->authenticationStorage->get($this->getKey());
-        if (isset($authData['token'])) {
-            return $authData['token'];
+        $securityToken = $this->authenticationStorage->get($this->getKey());
+        if ($securityToken instanceof Token) {
+            $attributes = $securityToken->getAttributes();
+            if (isset($attributes['oauth_token'])) {
+                return $attributes['oauth_token'];
+            }
         }
 
         if (file_exists($path = Composer::getComposerHomeDir().'/auth.json')) {

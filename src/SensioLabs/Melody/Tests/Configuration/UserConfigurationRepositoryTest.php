@@ -4,7 +4,7 @@ namespace SensioLabs\Melody\Tests\Configuration;
 
 use SensioLabs\Melody\Configuration\UserConfiguration;
 use SensioLabs\Melody\Configuration\UserConfigurationRepository;
-use SensioLabs\Melody\Security\AuthenticationStorage;
+use SensioLabs\Melody\Security\TokenStorage;
 
 class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -67,7 +67,7 @@ class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
         if (file_exists($filename)) {
             unlink($filename);
         }
-        $authenticationStorage = new AuthenticationStorage();
+        $authenticationStorage = new TokenStorage();
         $config = new UserConfiguration($authenticationStorage);
         $config->addTrustedSignatures(array('foo', 'bar'));
         $config->addTrustedUsers(array('baz', 'qux'));

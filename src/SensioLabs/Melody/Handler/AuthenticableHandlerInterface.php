@@ -3,6 +3,7 @@
 namespace SensioLabs\Melody\Handler;
 
 use SensioLabs\Melody\Exception\InvalidCredentialsException;
+use SensioLabs\Melody\Security\Token;
 
 /**
  * @author Maxime STEINHAUSSER <maxime.steinhausser@gmail.com>
@@ -29,11 +30,11 @@ interface AuthenticableHandlerInterface
     public function getRequiredCredentials();
 
     /**
-     * Authenticates using given credentials and returns authentication data for storage or further use.
+     * Authenticates using given credentials and returns a security token for further use.
      *
      * @param array $credentials
      *
-     * @return string|array
+     * @return Token
      *
      * @throws InvalidCredentialsException
      */

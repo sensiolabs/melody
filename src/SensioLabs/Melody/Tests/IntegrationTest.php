@@ -5,7 +5,7 @@ namespace SensioLabs\Melody\Tests;
 use SensioLabs\Melody\Configuration\RunConfiguration;
 use SensioLabs\Melody\Configuration\UserConfiguration;
 use SensioLabs\Melody\Melody;
-use SensioLabs\Melody\Security\AuthenticationStorage;
+use SensioLabs\Melody\Security\TokenStorage;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
@@ -144,7 +144,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     private function melodyRunStream($protocol, $fixture, array $options = array())
     {
-        $authenticationStorage = new AuthenticationStorage();
+        $authenticationStorage = new TokenStorage();
         $melody = new Melody($authenticationStorage);
 
         $filename = sprintf('%s://%s', $protocol, $fixture);
@@ -173,7 +173,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     private function melodyRun($filename, array $options = array())
     {
-        $authenticationStorage = new AuthenticationStorage();
+        $authenticationStorage = new TokenStorage();
         $melody = new Melody($authenticationStorage);
 
         $options = array_replace(array(

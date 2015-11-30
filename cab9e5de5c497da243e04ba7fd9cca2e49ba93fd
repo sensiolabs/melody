@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by lyrixx at 2015-11-28T08:39:47Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by xabbuh at 2015-11-28T08:55:23Z
+
+@lyrixx Hm, I am not sure if this change is not related to the failing tests (I am bit too unfamiliar with what all the tests do). What do you think?
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2015-11-28T09:52:26Z
+
+I'm on holidays, will check on Monday :-)
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2015-11-28T15:34:03Z
+
+@xabbuh : None of the failing tests are related to your changes. That's only due to Github's API rate limit and gists download.
+We should probably create a user and token for those integration tests to work once #66 is ready.

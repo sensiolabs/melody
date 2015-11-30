@@ -16,7 +16,7 @@ class Metadata
     private $revision;
     private $uri;
 
-    public function __construct($id, $owner, \DateTime $createdAd, \DateTime $updatedAt, $revision, $uri)
+    public function __construct($id = null, $owner = null, \DateTime $createdAd = null, \DateTime $updatedAt = null, $revision = null, $uri = null)
     {
         $this->id = $id;
         $this->owner = $owner;

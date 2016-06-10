@@ -17,5 +17,8 @@ php:
 install:
     - composer --prefer-dist install
 
+before_script:
+- rm -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini    
+
 script:
   - phpunit

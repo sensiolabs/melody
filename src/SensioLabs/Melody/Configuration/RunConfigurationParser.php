@@ -41,7 +41,7 @@ class RunConfigurationParser
 
         foreach ($config['packages'] as $i => $package) {
             if (!is_string($package)) {
-                throw new ParseException(sprintf('The package at key "%s" should be a string.', $i));
+                throw new ParseException(sprintf('The package at key "%s" should be a string, "%s" given.', $i, gettype($package)));
             }
 
             $packages[] = $this->extractPackage($package);

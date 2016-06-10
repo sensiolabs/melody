@@ -34,7 +34,7 @@ class RunConfigurationParserTest extends \PHPUnit_Framework_TestCase
             array('foobar', 'The configuration should be an array.'),
             array(array('foobar' => 'bar'), 'The configuration should define a "packages" key.'),
             array(array('packages' => 'string'), 'The packages configuration should be an array.'),
-            array(array('packages' => array('symfony/symfony' => array())), 'The package at key "symfony/symfony" should be a string.'),
+            array(array('packages' => array('symfony/symfony' => array())), 'The package at key "symfony/symfony" should be a string, "array" given.'),
             array(array('packages' => array('symfony/symfony: 1 :1')), 'The package named "symfony/symfony" is not valid. It should contain only one ":".'),
             array(array('packages' => array('symfony/symfony/nope: 1')), 'The package named "symfony/symfony/nope" is not valid.'),
             array(array('packages' => array('symfony/symfony:')), 'The package version named "symfony/symfony" is not valid.'),

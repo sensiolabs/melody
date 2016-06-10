@@ -6,7 +6,7 @@ use SensioLabs\Melody\Handler\GistHandler;
 
 class GistHandlerTest extends \PHPUnit_Framework_TestCase
 {
-    const SINGLE_URL = 'https://gist.github.com/csarrazi/7494d27255d0561157b8';
+    const SINGLE_URL = 'https://gist.github.com/lyrixx/44c737e5096e69ea9305';
     const MULTI_URL = 'https://gist.github.com/alexandresalome/e1dcf99dedadd4838a99';
 
     private $handler;
@@ -56,8 +56,7 @@ class GistHandlerTest extends \PHPUnit_Framework_TestCase
         $resource = $this->handler->createResource(self::SINGLE_URL);
 
         $this->assertInstanceOf('SensioLabs\Melody\Resource\Resource', $resource);
-        $this->assertContains('$composer', $resource->getContent());
-        $this->assertContains('twig/twig', $resource->getContent());
+        $this->assertContains('symfony/console', $resource->getContent());
     }
 
     /**

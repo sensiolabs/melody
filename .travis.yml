@@ -20,3 +20,7 @@ before_script:
 
 script:
   - phpunit
+
+branches:
+  only:
+    - master

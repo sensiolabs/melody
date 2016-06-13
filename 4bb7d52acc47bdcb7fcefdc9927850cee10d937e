@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by lyrixx at 2016-06-10T11:41:36Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2016-06-10T11:43:15Z
+
+Why don't you use this [syntax](https://github.com/symfony/symfony/blob/master/.travis.yml#L64)?
+
+---------------------------------------------------------------------------
+
+by staabm at 2016-06-10T11:54:44Z
+
+> Why don't you use this syntax?
+
+It doesnt work on the hhvm build
+
+---------------------------------------------------------------------------
+
+by xabbuh at 2016-06-10T13:22:54Z
+
+@staabm That's weird. Even if you replace `$PHP` with `$TRAVIS_PHP_VERSION`?
+
+---------------------------------------------------------------------------
+
+by staabm at 2016-06-10T14:32:01Z
+
+Hhvm does not use phpenv. In case we would add it we would need 2 separate cases, one for hhvm one for php to make it not fail.
+
+---------------------------------------------------------------------------
+
+by xabbuh at 2016-06-11T09:58:26Z
+
+@staabm But there's no Xdebug on HHVM to disable anyway, is there?
+
+---------------------------------------------------------------------------
+
+by staabm at 2016-06-11T10:08:33Z
+
+Dont know. The PR as is - is the simplest x-build solution I guess. No unnecessary if etc.
+
+Invoking phpenv in the hhvm build will error on hhvm

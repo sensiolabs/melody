@@ -52,7 +52,7 @@ class RunConfigurationParser
                 if (count($package) == 1) {
                     $package = key($package).':'.current($package);
                 } else {
-                    throw new ParseException(sprintf('The package at key "%s" doesn\'t match the expected array structure', $i));
+                    throw new ParseException(sprintf('The package at key "%s" doesn\'t match the expected array structure.', $i));
                 }
             }
 

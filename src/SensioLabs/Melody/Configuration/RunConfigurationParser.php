@@ -40,8 +40,20 @@ class RunConfigurationParser
         $packages = array();
 
         foreach ($config['packages'] as $i => $package) {
-            if (!is_string($package)) {
-                throw new ParseException(sprintf('The package at key "%s" should be a string, "%s" given.', $i, gettype($package)));
+            if (!is_string($package) && !is_array($package)) {
+                throw new ParseException(sprintf('The package at key "%s" should either be a string or array, "%s" given', $i, gettype($package)));
+            }
+
+            if (is_array($package)) {
+                // reformat JSON like
+                // - "codeguy/arachnid": "1.*"
+                // into
+                // - "codeguy/arachnid: 1.*"
+                if (count($package) == 1) {
+                    $package = key($package).':'.current($package);
+                } else {
+                    throw new ParseException(sprintf('The package at key "%s" doesn\'t match the expected array structure', $i));
+                }
             }
 
             $packages[] = $this->extractPackage($package);

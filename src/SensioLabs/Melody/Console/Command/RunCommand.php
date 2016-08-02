@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Process\Process;
 
@@ -119,7 +120,6 @@ EOT
 
     private function confirmTrust(Resource $resource, InputInterface $input, OutputInterface $output)
     {
-        $dialog = $this->getHelperSet()->get('dialog');
         $message = <<<EOT
 <comment>You are running an untrusted resource</comment>
   <info>URL:            </info> %s
@@ -148,7 +148,7 @@ EOT;
             return $action;
         }, $actions);
 
-        $defaultStyle = clone($output->getFormatter()->getStyle('question'));
+        $defaultStyle = clone $output->getFormatter()->getStyle('question');
         $defaultStyle->setOptions(array('reverse'));
         $output->getFormatter()->setStyle('default', $defaultStyle);
 
@@ -162,7 +162,9 @@ EOT;
         if ($action === 'show-code') {
             $output->writeln(PHP_EOL.$resource->getContent().PHP_EOL);
 
-            return $dialog->askConfirmation($output, '<question>Do you want to continue [y/N]?</question> ', false);
+            $question = new ConfirmationQuestion('Do you want to continue [y/N]?</question> ', false);
+
+            return $this->getHelper('question')->ask($input, $output, $question);
         }
 
         return $action === 'continue';

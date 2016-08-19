@@ -7,7 +7,7 @@ Create a file named `test.php`:
 <?php
 <<<CONFIG
 packages:
-    - "symfony/finder: ~2.5"
+    - "symfony/finder: ~2.8"
 CONFIG;
 
 $finder = Symfony\Component\Finder\Finder::create()

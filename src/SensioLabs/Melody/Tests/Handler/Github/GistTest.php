@@ -18,7 +18,7 @@ class GistTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider      provideInvalidUrl
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testInvalidUrl($invalidUrl)
     {

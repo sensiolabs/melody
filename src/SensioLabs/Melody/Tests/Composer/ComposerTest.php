@@ -39,7 +39,7 @@ class ComposerTest extends \PHPUnit_Framework_TestCase
             'symfony/symfony' => '*',
         );
 
-        $process = $this->composer->buildProcess($packages,  array(), $this->workingDirPath, true);
+        $process = $this->composer->buildProcess($packages, array(), $this->workingDirPath, true);
 
         $this->assertStringEndsWith(" 'update' '--prefer-source'", $process->getCommandLine());
     }

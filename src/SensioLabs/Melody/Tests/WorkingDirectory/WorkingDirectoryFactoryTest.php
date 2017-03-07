@@ -9,7 +9,7 @@ class WorkingDirectoryFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \org\bovigo\vfs\vfsStreamDirectory */
     private $storageDir;
-    /** @var  \SensioLabs\Melody\WorkingDirectory\WorkingDirectoryFactory */
+    /** @var \SensioLabs\Melody\WorkingDirectory\WorkingDirectoryFactory */
     private $workingDirectoryFactory;
 
     protected function setUp()

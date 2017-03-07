@@ -53,11 +53,10 @@ class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
             $repository = new UserConfigurationRepository($filename);
             $repository->load();
             unlink($filename);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             unlink($filename);
             throw $e;
         }
-
     }
 
     public function testSave()
@@ -82,7 +81,7 @@ class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
     - qux
 ';
 
-        $this->assertTrue(file_exists($filename));
+        $this->assertFileExists($filename);
         $this->assertEquals($expected, file_get_contents($filename));
         unlink($filename);
     }

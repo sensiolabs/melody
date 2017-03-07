@@ -116,7 +116,7 @@ You are running an untrusted resource
 What do you want to do (show-code, continue, abort)?
 ```
 
-But if you trust the resource and don't want to interract with Melody, you
+But if you trust the resource and don't want to interact with Melody, you
 can pass the parameter `--trust` to the command
 
 ```bash
@@ -181,9 +181,9 @@ Beware that `CONFIG` section contents must comply with YAML syntax restrictions:
 Using fork and private repositories
 -----------------------------------
 
-If you need to use packages not registred in Packagist repository, you can
+If you need to use packages not registered in Packagist repository, you can
 specify repositories in the YAML configuration.
-See [composer documention](https://getcomposer.org/doc/05-repositories.md).
+See [composer documentation](https://getcomposer.org/doc/05-repositories.md).
 
 ```php
 <?php

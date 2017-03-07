@@ -58,7 +58,7 @@ class UserConfigurationRepository
     }
 
     /**
-     * Retreives path to the user's HOME directory.
+     * Retrieves path to the user's HOME directory.
      *
      * @return string
      */

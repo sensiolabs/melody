@@ -9,8 +9,8 @@ class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoad()
     {
-        $repositpory = new UserConfigurationRepository(__DIR__.'/../Fixtures/config.yml');
-        $config = $repositpory->load();
+        $repository = new UserConfigurationRepository(__DIR__.'/../Fixtures/config.yml');
+        $config = $repository->load();
 
         $this->assertInstanceOf('SensioLabs\Melody\Configuration\UserConfiguration', $config);
         $this->assertEquals(array('foo', 'bar'), $config->getTrustedSignatures());
@@ -19,8 +19,8 @@ class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadWithWrongData()
     {
-        $repositpory = new UserConfigurationRepository(__DIR__.'/../Fixtures/config-empty.yml');
-        $config = $repositpory->load();
+        $repository = new UserConfigurationRepository(__DIR__.'/../Fixtures/config-empty.yml');
+        $config = $repository->load();
 
         $this->assertInstanceOf('SensioLabs\Melody\Configuration\UserConfiguration', $config);
         $this->assertEmpty($config->getTrustedSignatures());
@@ -29,8 +29,8 @@ class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadWithoutPreviousData()
     {
-        $repositpory = new UserConfigurationRepository(__DIR__.'/../Fixtures/does_not_exists.yml');
-        $config = $repositpory->load();
+        $repository = new UserConfigurationRepository(__DIR__.'/../Fixtures/does_not_exists.yml');
+        $config = $repository->load();
 
         $this->assertInstanceOf('SensioLabs\Melody\Configuration\UserConfiguration', $config);
         $this->assertEmpty($config->getTrustedSignatures());
@@ -50,8 +50,8 @@ class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
         file_put_contents($filename, 'foo: *bar');
 
         try {
-            $repositpory = new UserConfigurationRepository($filename);
-            $repositpory->load();
+            $repository = new UserConfigurationRepository($filename);
+            $repository->load();
             unlink($filename);
         } catch(\Exception $e) {
             unlink($filename);
@@ -70,8 +70,8 @@ class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
         $config->addTrustedSignatures(array('foo', 'bar'));
         $config->addTrustedUsers(array('baz', 'qux'));
 
-        $repositpory = new UserConfigurationRepository($filename);
-        $repositpory->save($config);
+        $repository = new UserConfigurationRepository($filename);
+        $repository->save($config);
 
         $expected = 'trust:
   signatures:

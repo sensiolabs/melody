@@ -35,6 +35,7 @@ class GarbageCollector
         $maxATime = time() - self::TTL;
 
         $files = Finder::create()
+            ->files()
             ->in($this->storePath)
             ->depth(1)
             ->name(Runner::BOOTSTRAP_FILENAME)

@@ -7,6 +7,7 @@ use SensioLabs\Melody\Resource\Resource;
 use SensioLabs\Melody\Script\Script;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Exception\RuntimeException;
 
 /**
  * Runner.
@@ -51,8 +52,11 @@ class Runner
             ->getProcess()
         ;
 
-        if (!defined('PHP_WINDOWS_VERSION_BUILD') && php_sapi_name() === 'cli') {
-            $process->setTty(true);
+        if (!defined('PHP_WINDOWS_VERSION_BUILD') && PHP_SAPI === 'cli') {
+            try {
+                $process->setTty(true);
+            } catch (RuntimeException $e) {
+            }
         }
 
         return $process;

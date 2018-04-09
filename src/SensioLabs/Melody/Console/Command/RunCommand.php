@@ -4,9 +4,12 @@ namespace SensioLabs\Melody\Console\Command;
 
 use SensioLabs\Melody\Configuration\RunConfiguration;
 use SensioLabs\Melody\Configuration\UserConfigurationRepository;
+use SensioLabs\Melody\Exception\AuthenticationRequiredException;
 use SensioLabs\Melody\Exception\TrustException;
+use SensioLabs\Melody\Handler\AuthenticableHandlerInterface;
 use SensioLabs\Melody\Melody;
 use SensioLabs\Melody\Resource\Resource;
+use SensioLabs\Melody\Security\TokenStorage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -69,9 +72,10 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $melody = new Melody();
+        $tokenStorage = new TokenStorage();
         $configRepository = new UserConfigurationRepository();
-        $userConfig = $configRepository->load();
+        $userConfig = $configRepository->load($tokenStorage);
+        $melody = new Melody($tokenStorage);
 
         $processHelper = $this->getHelperSet()->get('process');
 
@@ -113,6 +117,22 @@ EOT
                 }
 
                 $userConfig->addTrustedSignature($e->getResource()->getSignature());
+                $configRepository->save($userConfig);
+            } catch (AuthenticationRequiredException $e) {
+                $output->writeln(sprintf(
+                    '<error>The following error was encountered while trying to access the resource: "%s"</error>',
+                    $e->getMessage()
+                ));
+
+                $handler = $e->getHandler();
+                if (!$handler instanceof AuthenticableHandlerInterface) {
+                    $output->writeln(sprintf('<error>%s.</error>', $e->getMessage()));
+
+                    return 1;
+                }
+                $handlerAuthenticationHelper = $this->getHelper('handler_authentication');
+                $token = $handlerAuthenticationHelper->askCredentials($input, $output, $handler);
+                $tokenStorage->set($handler->getKey(), $token);
                 $configRepository->save($userConfig);
             }
         }

@@ -4,6 +4,7 @@ namespace SensioLabs\Melody\Tests\Configuration;
 
 use SensioLabs\Melody\Configuration\UserConfiguration;
 use SensioLabs\Melody\Configuration\UserConfigurationRepository;
+use SensioLabs\Melody\Security\TokenStorage;
 
 class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -65,9 +66,11 @@ class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
         if (file_exists($filename)) {
             unlink($filename);
         }
-        $config = new UserConfiguration();
+        $authenticationStorage = new TokenStorage();
+        $config = new UserConfiguration($authenticationStorage);
         $config->addTrustedSignatures(array('foo', 'bar'));
         $config->addTrustedUsers(array('baz', 'qux'));
+        $authenticationStorage->set('foo', array('bar' => 'baz'));
 
         $repository = new UserConfigurationRepository($filename);
         $repository->save($config);
@@ -79,6 +82,9 @@ class UserConfigurationRepositoryTest extends \PHPUnit_Framework_TestCase
   users:
     - baz
     - qux
+authentication_data:
+  foo:
+    bar: baz
 ';
 
         $this->assertFileExists($filename);

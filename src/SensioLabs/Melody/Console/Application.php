@@ -4,6 +4,7 @@ namespace SensioLabs\Melody\Console;
 
 use SensioLabs\Melody\Console\Command\RunCommand;
 use SensioLabs\Melody\Console\Command\SelfUpdateCommand;
+use SensioLabs\Melody\Console\Helper\HandlerAuthenticationHelper;
 use SensioLabs\Melody\Melody;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Helper\ProcessHelper;
@@ -29,6 +30,7 @@ class Application extends BaseApplication
     public function __construct()
     {
         parent::__construct('Melody', Melody::VERSION);
+        $this->getHelperSet()->set(new HandlerAuthenticationHelper());
     }
 
     public function getHelp()

@@ -2,8 +2,6 @@
 
 namespace SensioLabs\Melody\Handler;
 
-use SensioLabs\Melody\Resource\Resource;
-
 /**
  * Interface ResourceHandlerInterface.
  *

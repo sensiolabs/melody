@@ -3,6 +3,7 @@
 namespace SensioLabs\Melody\Configuration;
 
 use SensioLabs\Melody\Exception\ConfigException;
+use SensioLabs\Melody\Security\TokenStorage;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
@@ -21,11 +22,13 @@ class UserConfigurationRepository
     /**
      * Load stored configuration. Returns an empty UserConfiguration if no previous configuration was stored.
      *
+     * @param TokenStorage $tokenStorage
+     *
      * @return UserConfiguration
      */
-    public function load()
+    public function load(TokenStorage $tokenStorage = null)
     {
-        $config = new UserConfiguration();
+        $config = new UserConfiguration($tokenStorage);
         if (!file_exists($this->storagePath)) {
             return $config;
         }

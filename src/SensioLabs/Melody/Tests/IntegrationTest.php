@@ -39,6 +39,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('Loading composer repositories with package information', $output);
         $this->assertContains('Updating dependencies (including require-dev)', $output);
         $this->assertContains('Installing twig/twig (v1.16.0)', $output);
+        $this->assertNotContains('#!/usr/bin/env -S melody run', $output);
         $this->assertContains('Hello world', $output);
     }
 

@@ -36,6 +36,11 @@ class FileHandler implements ResourceHandlerInterface
             sprintf('file://%s', realpath($filename))
         );
 
-        return new LocalResource($filename, file_get_contents($filename), $metadata);
+        $content = file_get_contents($filename);
+        if ('#!' === substr($content, 0, 2)) {
+            $content = explode("\n", $content."\n", 2)[1];
+        }
+
+        return new LocalResource($filename, $content, $metadata);
     }
 }

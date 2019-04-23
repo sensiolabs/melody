@@ -27,11 +27,7 @@ class Runner
 
     public function getProcess(Script $script, $dir)
     {
-        if ($script->getResource() instanceof LocalResource) {
-            $bootstrap = $this->getLocalBootstrap($script->getResource());
-        } else {
-            $bootstrap = $this->getRemoteBootstrap($script->getResource());
-        }
+        $bootstrap = $this->getBootstrap($script->getResource());
 
         $file = sprintf('%s/%s', $dir, self::BOOTSTRAP_FILENAME);
 
@@ -62,22 +58,7 @@ class Runner
         return $process;
     }
 
-    private function getLocalBootstrap(LocalResource $resource)
-    {
-        $template = <<<'TEMPLATE'
-{{ head }}
-
-require '{{ script_filename }}';
-
-TEMPLATE;
-
-        return strtr($template, array(
-            '{{ head }}' => $this->getHead(),
-            '{{ script_filename }}' => $resource->getFilename(),
-        ));
-    }
-
-    private function getRemoteBootstrap(Resource $resource)
+    private function getBootstrap(Resource $resource)
     {
         $template = <<<TEMPLATE
 {{ head }}

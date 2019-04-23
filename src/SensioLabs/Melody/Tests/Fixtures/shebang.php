@@ -1,4 +1,4 @@
-#!/usr/local/bin/melody run
+#!/usr/bin/env -S melody run
 <?php
 <<<CONFIG
 packages:

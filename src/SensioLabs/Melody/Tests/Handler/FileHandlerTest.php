@@ -45,4 +45,14 @@ class FileHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('SensioLabs\Melody\Resource\Resource', $resource);
         $this->assertSame(file_get_contents($filename), $resource->getContent());
     }
+
+    public function testCreatedResourceDontContainsShebang()
+    {
+        $filename = __DIR__.'/../Fixtures/shebang.php';
+
+        $resource = $this->handler->createResource($filename);
+
+        $this->assertInstanceOf('SensioLabs\Melody\Resource\Resource', $resource);
+        $this->assertNotRegExp('/^#![^\n]+\n/u', $resource->getContent());
+    }
 }
